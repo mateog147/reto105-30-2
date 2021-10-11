@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registro Usuario</title>
+        <link rel="stylesheet" href="../static/css/style.css">
+        <script src="captcha.js"></script>
+    </head>
+<style> .container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .box {
+    /* background-color: #f1f2f2; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  
+  .captcha {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 2em;
+    padding: 3px;
+    border-radius: 5px;
+    text-decoration: line-through;
+    /* color: #a0a0a0; */
+  }
+  
+  .restart a {
+    text-decoration: none;
+  }
+  
+  .errmsg {
+    color: black;
+    padding: 5px;
+    transition: 0.5s ease;
+    }
+    .button1{
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Mulish', sans-serif;
+    letter-spacing: 3px;
+    width: 90%;
+    height: 40px;
+    margin: 11px 0px;}
+  </style>
+    <body>
+        <header class="header">
+            <img class="header__img" src="../static/media/icons8-aeropuerto-100.png" alt="Logo">
+            <h2 class="header__title">Aeropuerto Matecaña Internacional</h2>
+        </header>
+
+        <section class="login">
+            <section class="login__container">
+                    <h2>Crea tu Usuario</h2>
+                    <form action="login__container--form">
+                        <input class="input" type="text" placeholder="Nombre" required/>
+                        <input class="input" type="text" placeholder="Apellidos" required/>
+                        <p>Tipo de Documento</p>
+                        <select class="select">
+                            <option>CC</option>
+                            <option>TI</option>
+                            <option>CE</option>
+                            </select>
+                        <input class="input" type="text" placeholder="Numero de Documento" required/>
+                        <input class="input" type="email" placeholder="Correo Electronico" required/>
+                        <input class="input" type="password" placeholder="Ingrese la Contraseña" />
+                        <input class="input" type="password" placeholder="Confirme la Contraseña" />
+                        <div class="container">
+                            <div id="captcha" class="captcha"></div>
+                            <div class="restart">
+                            </div>
+                            <div class="input">
+                              <input
+                                type="text"
+                                name="reCaptcha"
+                                id="reCaptcha"
+                                placeholder="Type The Captcha"
+                              />
+                            </div>
+                              <div>
+                                  <!-- <input type="button" value="Validar" onclick="validateCaptcha()" /> -->
+                                  <!-- <input class="button1" type="button" value="Recargar" onclick="createCaptcha()"> -->
+                          </div>
+                            <div id="errCaptcha" class="errmsg"></div>
+                              </div>
+                              <div id="captcha" class="captcha"><script>createCaptcha();</script></div>
+                              <div class="restart">
+                               <a href="#" onclick="createCaptcha()">Recargar</a>
+                              </div>
+                        <button class="button" value="Registame" onclick="validateCaptcha()">
+                    </form>
+                    <a href="/AIM/login.html">Registrarse</a>
+                </section>
+        </section>
+        <footer class="footer">
+            <a href="/">Terminos y condiciones </a>
+            <a href="/">Contactanos</a>
+        </footer>
+    </body>
+</html>

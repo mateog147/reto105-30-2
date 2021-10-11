@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+    <style>
+        #myTable {
+
+width: 100%;
+font-size: 18px;
+box-sizing: border-box;
+}
+
+#myTable td{
+color: white;
+border: 2px solid;
+}
+#myTable th, #myTable td {
+text-align: left;
+padding: 12px;
+}
+
+
+#myTable tr.header1, #myTable tr:hover {
+background-color: #171f60;
+}
+.login__title
+{
+background-color: #171f60;
+}
+
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registro de Vuelo</title>
+        <link rel="stylesheet" href="../static/css/style.css">
+    </head>
+
+    <body>
+        <header class="header">
+            <img class="header__img" src="../static/media/icons8-aeropuerto-100.png" alt="Logo">
+            <h2 class="header__title">Aeropuerto Matecaña Internacional</h2>
+        </header>
+        <section class="login">
+            <section class="login__container">
+                    <center><h2>Separa tu Vuelo</h2></center>
+                    <form action="login__container--form">
+                        
+                        <label for="">Ida y Vuelta<input type="checkbox" id="cbox1" value="first_checkbox"></label>
+                        <div>
+                            <span>Fecha del vuelo:</span>
+                            <input type="date"  />
+                        </div>
+                        <div class="login__select" style="display: flex;">
+                            <div>
+                                <span style="width: 50%;">Origen</span>
+                                <select class="select" style="width: 150px;">
+                                    <option value="">-</option>
+                                    <option value="Armenia">Armenia</option>
+                                    <option value="Barranquilla">Barranquilla</option>
+                                    <option value="Bogotá">Bogotá</option>
+                                    <option value="Bucaramanga">Bucaramanga</option>
+                                    <option value="Cali">Cali</option>
+                                    <option value="Cartagena">Cartagena</option>
+                                    <option value="Cúcuta">Cúcuta</option>
+                                    <option value="Florencia">Florencia</option>
+                                    <option value="Ibagué">Ibagué</option>
+                                    <option value="Leticia">Leticia</option>
+                                    <option value="Manizales">Manizales</option>
+                                    <option value="Medellín">Medellín</option>
+                                    <option value="Medellín">Pereira-PEI</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span style="width: 50%;">Destino</span>
+                                <select class="select" style="width: 150px;">
+                                    <option value="">-</option>
+                                    <option value="Armenia">Armenia</option>
+                                    <option value="Barranquilla">Barranquilla</option>
+                                    <option value="Bogotá">Bogotá</option>
+                                    <option value="Bucaramanga">Bucaramanga</option>
+                                    <option value="Cali">Cali</option>
+                                    <option value="Cartagena">Cartagena</option>
+                                    <option value="Cúcuta">Cúcuta</option>
+                                    <option value="Florencia">Florencia</option>
+                                    <option value="Ibagué">Ibagué</option>
+                                    <option value="Leticia">Leticia</option>
+                                    <option value="Manizales">Manizales</option>
+                                    <option value="Medellín">Medellín-MDE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="button">Buscar Vuelo</button>
+                    </form>
+                    <table id="myTable">
+                    <tr class="header1">
+                        <th style="width:30%;">No. Vuelo</th>
+                        <th style="width:30%;">Aerolinea</th>
+                        <th style="width:30%;">Hora</th>
+                    </tr>
+                    <tr>
+                        <td>AV-1234</td>
+                        <td>Avianca</td>
+                        <td>6:15</td>
+                    </tr>
+                    <tr>
+                        <td>VA-9874</td>
+                        <td>VivaAir</td>
+                        <td>13:20</td>
+                    </tr>
+                    
+                    
+                    </table>
+                </section>
+        </section>
+        <footer class="footer">
+            <a href="/">Terminos y condiciones </a>
+            <a href="/">Contactanos</a>
+        </footer>
+    </body>
+</html>
