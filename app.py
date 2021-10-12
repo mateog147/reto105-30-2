@@ -77,5 +77,28 @@ def calificarVuelo():
 def separarVuelo():
     return render_template('separarVuelo.html')
 
+@server.route('/roles/')
+def permisosRoles():
+    return render_template('permisosRoles.html')
+
+@server.route('/verusuarios/')
+def listarUsuario():
+    return render_template('verUsuarios.html')
+
+@server.route('/vervuelos/')
+@server.route('/vervuelos/<string:usr>')
+def listarVuelos():
+    return render_template('verVuelos.html')
+
+@server.route('/editarusuario/')
+def editUser():
+    sal = '<p>Pantalla para editar usuario</p>'
+    sal +='<a href="/menu/">atras</a>'
+    return sal
+
+@server.route('/calificaciones/')
+@server.route('/calificaciones/<string:usr>')
+def verCal():
+    return render_template('comentarios.html')
 if __name__=='__main__':
     server.run(debug=True,port=8080)

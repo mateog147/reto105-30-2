@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<style>
+    body{
+      background: #e4ae44;
+    }
+    .header 
+    {
+      width                   : 100% !important;
+      height                  : 10vh !important;
+    }  
+    .footer {
+      width                   : 100% !important;
+      height                  : 30px !important;
+      position                : fixed !important;
+      bottom                  :0px ;
+      left                    :0px;
+    }
+    .wkarea {
+            width                   : 100%;
+            min-height                  : 85vh;
+            background: linear-gradient(#171f60,#1e63b1);
+    }
+    
+    .nav {
+      display: flex;
+      justify-content: space-between;}
+
+
+    .nav-link {
+    color: white;
+    text-decoration: none;
+    }
+
+    .nav-menu {
+  display: flex;
+  margin-right: 40px;
+  list-style: none;
+}
+
+.nav-menu-item {
+  font-size: 18px;
+  margin: 0 10px;
+  line-height: 80px;
+  text-transform: uppercase;
+  width: max-content;
+}
+
+.nav-menu-link {
+  padding: 8px 12px;
+  border-radius: 3px;
+}
+
+.nav-menu-link:hover,
+.nav-menu-link_active {
+  background-color: #034574;
+  transition: 0.5s;
+}
+
+/* TOGGLE */
+.nav-toggle {
+  color: white;
+  background: none;
+  border: none;
+  font-size: 30px;
+  padding: 0 20px;
+  line-height: 60px;
+  cursor: pointer;
+
+  display: none;
+
+
+}
+
+/* * {
+  box-sizing: border-box;
+} */
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  background: linear-gradient(rgba(227,162,63), rgba(228,174,68));
+  
+  margin-bottom: 12px;
+}
+#myInput::placeholder{
+  color:black
+}
+
+#myTable {
+
+  width: 100%;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+#myTable td{
+  color: white;
+}
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+
+#myTable tr.header1, #myTable tr:hover {
+  background-color: #e4ae44;
+}
+.login__title
+{
+ background-color: linear-gradient(rgba(227,162,63), rgba(228,174,68));
+}
+</style>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VER VUELOS AIM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <img class="header__img" src="./icons/icons8-aeropuerto-100.png" alt="Logo">
+        <nav class="nav">
+          <ul class="nav-menu">
+            <li class="nav-menu-item">
+              <a href="login.html" class="nav-menu-link nav-link">Inicio de Sesión</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="RegistroUsuario.html" class="nav-menu-link nav-link">Registro de Usuario</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="#" class="nav-menu-link nav-link">Sobre Nosotros</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="#" class="nav-menu-link nav-link ">Contactanos</a>
+            </li>
+           
+          </ul>
+        </nav>
+    </header>
+</body>
+<section class="wkarea">
+  <center><h2 style="color: white;" class="login__title">BUSCAR USUARIOS </h2></center>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar Usuario por Cedula" title="Codigo de Vuelo">
+
+<table id="myTable">
+  <tr class="header1">
+    <th style="width:5%;">No.</th>
+    <th style="width:15%;">Nombre</th>
+    <th style="width:15%;">Apellidos</th>
+    <th style="width:10%;">Tipo Documento</th>
+    <th style="width:10%;">Documento</th>
+    <th style="width:15%;">E-Mail</th>
+    <th style="width:10%;">Perfil</th>
+    <th style="width:10%;">Contraseña</th>
+    <th style="width:10%;">Estado</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Pedro</td>
+    <td>Pardo Posada</td>
+    <td>CC</td>
+    <td>147852</td>
+    <td>ppardo@correo.com</td>
+    <td>Usuario Final</td>
+    <td>YU2!tTPdf</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Alejandra</td>
+    <td>Perez Ossa</td>
+    <td>CC</td>
+    <td>963258741</td>
+    <td>alejap123@correo.com</td>
+    <td>Usuario Final</td>
+    <td>U2!?pPdf</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Mateo</td>
+    <td>Gutierreza Medina</td>
+    <td>CC</td>
+    <td>1039462268</td>
+    <td>mateomedina@uninorte.edu.co</td>
+    <td>Administrador</td>
+    <td>1q2w3e4r45</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Nicolas</td>
+    <td>Bustamante Bedoya</td>
+    <td>CC</td>
+    <td>123456789</td>
+    <td>nico147@vivaair.com</td>
+    <td>Piloto</td>
+    <td>U2!?pPdf</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Juan Pablo</td>
+    <td>Montoya</td>
+    <td>CC</td>
+    <td>159753</td>
+    <td>jpmontoya@correo.com</td>
+    <td>Usuario Final</td>
+    <td>U2!?pPdf</td>
+    <td>I</td>
+  </tr>
+  
+  
+</table>
+    </section>
+
+  <body>
+    <footer class="footer">
+        <a href="/">Terminos y condiciones </a>
+        <a href="/">Contactanos</a>
+    </footer>
+  </body>
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+  </script>
+</html>

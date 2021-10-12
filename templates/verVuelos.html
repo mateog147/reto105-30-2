@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<style>
+    body{
+      background: #e4ae44;
+    }
+    .header 
+    {
+      width                   : 100% !important;
+      height                  : 10vh !important;
+    }  
+    .footer {
+      width                   : 100% !important;
+      height                  : 30px !important;
+      position                : fixed !important;
+      bottom                  :0px ;
+      left                    :0px;
+    }
+    .wkarea {
+            width                   : 100%;
+            height                  : 85vh;
+            background: linear-gradient(#e4ae44,#d80200);
+    }
+    
+    .nav {
+      display: flex;
+      justify-content: space-between;}
+
+
+    .nav-link {
+    color: white;
+    text-decoration: none;
+    }
+
+    .nav-menu {
+  display: flex;
+  margin-right: 40px;
+  list-style: none;
+}
+
+.nav-menu-item {
+  font-size: 18px;
+  margin: 0 10px;
+  line-height: 80px;
+  text-transform: uppercase;
+  width: max-content;
+}
+
+.nav-menu-link {
+  padding: 8px 12px;
+  border-radius: 3px;
+}
+
+.nav-menu-link:hover,
+.nav-menu-link_active {
+  background-color: #034574;
+  transition: 0.5s;
+}
+
+/* TOGGLE */
+.nav-toggle {
+  color: white;
+  background: none;
+  border: none;
+  font-size: 30px;
+  padding: 0 20px;
+  line-height: 60px;
+  cursor: pointer;
+
+  display: none;
+
+
+}
+
+/* * {
+  box-sizing: border-box;
+} */
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  background: linear-gradient(rgba(227,162,63), rgba(228,174,68));
+    
+  margin-bottom: 12px;
+}
+
+#myTable {
+
+  width: 100%;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+
+
+#myTable tr.header1, #myTable tr:hover {
+  background-color: #e4ae44;
+}
+.login__title
+{
+ background-color: linear-gradient(rgba(227,162,63), rgba(228,174,68));
+}
+</style>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VER VUELOS AIM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="header">
+        <img class="header__img" src="./icons/icons8-aeropuerto-100.png" alt="Logo">
+        <nav class="nav">
+          <ul class="nav-menu">
+            <li class="nav-menu-item">
+              <a href="login.html" class="nav-menu-link nav-link">Inicio de Sesión</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="RegistroUsuario.html" class="nav-menu-link nav-link">Registro de Usuario</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="#" class="nav-menu-link nav-link">Sobre Nosotros</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="#" class="nav-menu-link nav-link ">Contactanos</a>
+            </li>
+           
+          </ul>
+        </nav>
+    </header>
+</body>
+<section class="wkarea">
+  <center><h2 style="color: white;" class="login__title">BUSCAR VUELOS <img class="header__img" align = 'center' src="./icons/buscarvuelo.png" alt="Logo"></h2></center>
+  
+ 
+
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar Vuelo" title="Codigo de Vuelo">
+
+<table id="myTable">
+  <tr class="header1">
+    <th style="width:10%;">No. Vuelo</th>
+    <th style="width:16%;">Aerolinea</th>
+    <th style="width:16%;">Destino</th>
+    <th style="width:16%;">Procedente</th>
+    <th style="width:10%;">Hora Salida</th>
+    <th style="width:10%;">Hora Llegada</th>
+    <th style="width:20%;">Estado</th>
+  </tr>
+  <tr>
+    <td>LN8520</td>
+    <td>LATAM Airlines</td>
+    <td>BUCARAMANGA</td>
+    <td> </td>
+    <td>05:00 PM</td>
+    <td>10:30 PM</td>
+    <td>ITINERARIO</td>
+  </tr>
+  <tr>
+    <td>VC6758</td>
+    <td>Viva Air Colombia</td>
+    <td>BOGOTA</td>
+    <td> </td>
+    <td>04:00 PM</td>
+    <td>10:30 PM</td>
+    <td>ITINERARIO</td>
+  </tr>
+  <tr>
+    <td>AV8550</td>
+    <td>AVIANCA</td>
+    <td>PEREIRA</td>
+    <td>BARRANQUILLA</td>
+    <td>04:30 PM</td>
+    <td>7:30 PM</td>
+    <td>EN VUELO</td>
+  </tr>
+  <tr>
+    <td>VC5248</td>
+    <td>AVIANCA</td>
+    <td>PEREIRA</td>
+    <td> BOGOTA </td>
+    <td>04:00 PM</td>
+    <td>5:30 PM</td>
+    <td>ITINERARIO</td>
+  </tr>
+  <tr>
+    <td>AV8570</td>
+    <td>AVIANCA</td>
+    <td>MONTERA</td>
+    <td> </td>
+    <td>04:00 PM</td>
+    <td>5:30 PM</td>
+    <td>ITINERARIO</td>
+  </tr>
+  
+  
+</table>
+    </section>
+
+  <body>
+    <footer class="footer">
+        <a href="/">Terminos y condiciones </a>
+        <a href="/">Contactanos</a>
+    </footer>
+  </body>
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+  </script>
+</html>

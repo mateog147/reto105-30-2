@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registro Usuario</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+
+    <body>
+        <header class="header">
+            <img class="header__img" src="./icons/icons8-aeropuerto-100.png" alt="Logo">
+            <h2 class="header__title">Aeropuerto Matecaña Internacional</h2>
+        </header>
+
+        <section class="login">
+            <section class="login__container">
+                    <h2>Asignar Roles y Permisos</h2>
+                    <form action="login__container--form">
+                        <p>Documento</p>
+                        <div>
+                        <select class="select" style="width: 60px;">
+                            <option>CC</option>
+                            <option>TI</option>
+                            <option>CE</option>
+                            </select>
+                            <input class="input" type="text" placeholder="Numero de Documento" style="width: 200px;" required/>
+                            <button class="button">Buscar</button>
+                        </div>
+                        <p>Nombre: *Nombre Usuario* </p>
+                        <div style="width: 100%;">
+                        <p style="width: 10px;">Perfil: </p>
+                        <select class="select" style="width: 120px;">
+                            <option>Piloto</option>
+                            <option>Usuario</option>
+                            <option>Administrador</option>
+                            </select>
+                        </div>
+                        
+                        <button class="button">Guardar Cambios</button>
+                    </form>
+                </section>
+        </section>
+        <footer class="footer">
+            <a href="/">Terminos y condiciones </a>
+            <a href="/">Contactanos</a>
+        </footer>
+    </body>
+</html>
