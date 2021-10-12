@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<style>
+    .header 
+    {
+      width                   : 100% !important;
+      height                  : 10vh !important;
+    }  
+    .footer {
+      width                   : 100% !important;
+      height                  : 5vh !important;}
+    .wkarea {
+            width                   : 100%;
+            height                  : 85vh;
+            background: linear-gradient(#e4ae44,#d80200);
+    }
+    
+    .nav {
+      display: flex;
+      justify-content: space-between;}
+
+
+    .nav-link {
+    color: white;
+    text-decoration: none;
+    }
+
+    .nav-menu {
+  display: flex;
+  margin-right: 40px;
+  list-style: none;
+}
+
+.nav-menu-item {
+  font-size: 18px;
+  margin: 0 10px;
+  line-height: 80px;
+  text-transform: uppercase;
+  width: max-content;
+}
+
+.nav-menu-link {
+  padding: 8px 12px;
+  border-radius: 3px;
+}
+
+.nav-menu-link:hover,
+.nav-menu-link_active {
+  background-color: #034574;
+  transition: 0.5s;
+}
+
+/* TOGGLE */
+.nav-toggle {
+  color: white;
+  background: none;
+  border: none;
+  font-size: 30px;
+  padding: 0 20px;
+  line-height: 60px;
+  cursor: pointer;
+
+  display: none;
+
+
+}
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME AIM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+    <header class="header">
+      <img class="header__img" src="../static/media/icons8-aeropuerto-100.png" alt="Logo" /> 
+          <ul class="nav-menu">
+            <li class="nav-menu-item">
+              <a href="/login/" class="nav-menu-link nav-link">Inicio de Sesión</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="/registro/" class="nav-menu-link nav-link">Registro de Usuario</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="/nosotros/" class="nav-menu-link nav-link">Sobre Nosotros</a>
+            </li>
+            <li class="nav-menu-item">
+              <a href="/contactanos/" class="nav-menu-link nav-link ">Contactanos</a>
+            </li>
+          </ul>
+        </nav>
+    </header>
+    <div class="wkarea">
+      <img class="img-main" src="../static/media/pexels-tanathip-rattanatum-2026324.jpg" alt="Logo">
+    </div>
+    </section>
+    <footer class="footer">
+      <a href="/terminos">Terminos y condiciones </a>
+      <a href="/contactanos">Contactanos</a>
+    </footer>
+</body>
+</html>

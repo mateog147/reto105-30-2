@@ -7,9 +7,7 @@ server = Flask('__name__')
 @server.route('/home/')
 @server.route('/index/')
 def index():
-    sal = '<h1>PAGINA INICIO</h1>'
-    sal +='<a href="/login">LOGIN</a>'
-    return sal
+    return render_template('index.html')
 
 @server.route('/terminos')
 @server.route('/terminos/')
