@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Registro Usuario</title>
         <link rel="stylesheet" href="../static/css/style.css">
-        <script src="captcha.js"></script>
+        <script src="../static/js/captcha.js"></script>
     </head>
 <style> .container {
     display: flex;
@@ -81,7 +81,7 @@
                         <input class="input" type="email" placeholder="Correo Electronico" required/>
                         <input class="input" type="password" placeholder="Ingrese la Contraseña" required/>
                         <input class="input" type="password" placeholder="Confirme la Contraseña" required/>
-                        <!--div class="container">
+                        <div class="container">
                             <div id="captcha" class="captcha"></div>
                             <div class="restart">
                             </div>
@@ -94,23 +94,23 @@
                               />
                             </div>
                               <div>
-                                  < <input type="button" value="Validar" onclick="validateCaptcha()" /> -->
-                                  <!-- <input class="button1" type="button" value="Recargar" onclick="createCaptcha()"> >
+                                  <input type="button" class="button" value="Validar Captcha" onclick="validateCaptcha()" />
+                                  <input class="button" type="button" value="Recargar" onclick="createCaptcha()" /> 
                           </div>
                             <div id="errCaptcha" class="errmsg"></div>
-                              </!--div>
+                              </div>
                               <div id="captcha" class="captcha"><script>createCaptcha();</script></div>
-                              <div!!-- class="restart">
-                              <a href="#" onclick="createCaptcha()">Recargar</a>
-                              </div!!-->
+                              <div! class="restart">
+                              
+                              </div!>
                         <button class="button" value="Registame" onclick="validateCaptcha()">
                     </form>
-                    <a href="/AIM/login.html">Registrarse</a>
+                    <a href="/login/">Registrarse</a>
                 </section>
         </section>
         <footer class="footer">
           <a href="/terminos">Terminos y condiciones </a>
-          <a href="/contactanos">Contactanos</a>>
+          <a href="/contactanos">Contactanos</a>
         </footer>
     </body>
 </html>

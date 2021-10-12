@@ -12,24 +12,18 @@ def index():
 @server.route('/nosotros')
 @server.route('/nosotros/')
 def about():
-    sal = '<h1>Sobre nosotros: </h1>'
-    sal += '<p>info</p>'
-    sal +='<a href="/home">HOME</a>'
-    return sal
+    return render_template('sobreNosotros.html')
+
 
 @server.route('/terminos')
 @server.route('/terminos/')
 def tercond():
-    sal = '<h1>Terminos y condiciones</h1>'
-    sal +='<a href="/home">HOME</a>'
-    return sal
+    return render_template('terminosCondiciones.html')
 
 @server.route('/contactanos')
 @server.route('/contactanos/')
 def contact():
-    sal = '<h1>Folmulario contacto</h1>'
-    sal +='<a href="/home">HOME</a>'
-    return sal
+    return render_template('contacto.html')
 
 @server.route('/login')
 @server.route('/login/')
@@ -43,54 +37,55 @@ def register():
 
 @server.route('/recuperarpwd/')
 def rpwd():
-    sal = '<p>pagina para recuperar tu clave vía correo</p>'
-    sal +='<a href="/home">HOME</a>'
+    sal = '<head><link rel="stylesheet" href="../static/css/style.css"></head>'
+    sal +="<div class = 'main'>"
+    sal += '<p>Se ha enviado un correo con las instrucciones</p>'
+    sal +='<a href="/home">VOLVER AL HOME</a>'
+    sal += '</div>'
     return sal
 
 @server.route('/menu')
 @server.route('/menu/')
 @server.route('/menu/<string:usr>')
-def userMenu():
+def userMenu(usr=None):
     return render_template('menuUsuario.html')
 
 @server.route('/madmin')
 @server.route('/madmin/')
 @server.route('/madmin/<string:usr>')
-def adminMenu():
+def adminMenu(usr=None):
     return render_template('menuAdmin.html')
 
 @server.route('/mpiloto')
 @server.route('/mpiloto/')
 @server.route('/mpiloto/<string:usr>')
-def pilotMenu():
+def pilotMenu(usr=None):
     return render_template('menuPiloto.html')
 
 @server.route('/calificar')
 @server.route('/calificar/')
 @server.route('/calificar/<string:cod>/<string:usr>')
-def calificarVuelo():
+def calificarVuelo(usr=None,cod=None):
     return render_template('calificarVuelo.html')
 
 @server.route('/separavuelo')
 @server.route('/separavuelo/')
 @server.route('/separavuelo/<string:usr>')
-def separarVuelo():
+def separarVuelo(usr=None):
     return render_template('separarVuelo.html')
 
 @server.route('/vervuelos/')
 @server.route('/vervuelos/<string:usr>')
-def listarVuelos():
+def listarVuelos(usr=None):
     return render_template('verVuelos.html')
 
 @server.route('/editarusuario/')
 def editUser():
-    sal = '<p>Pantalla para editar usuario</p>'
-    sal +='<a href="/menu/">atras</a>'
-    return sal
+    return render_template('editarEliminarUsuario.html')
 
 @server.route('/calificaciones/')
 @server.route('/calificaciones/<string:usr>')
-def verCal():
+def verCal(usr=None):
     return render_template('comentarios.html')
 
 @server.route('/roles/')
@@ -99,21 +94,15 @@ def permisosRoles():
 
 @server.route('/registrovuelo/')
 def registroVuelo():
-    sal = '<p>Pantalla para crear un vuelo</p>'
-    sal +='<a href="/madmin/">atras</a>'
-    return sal
+    return render_template('registroVuelo.html')
 
 @server.route('/editarvuelo/')
 def editoVuelo():
-    sal = '<p>Pantalla para editar un vuelo</p>'
-    sal +='<a href="/madmin/">atras</a>'
-    return sal
+    return render_template('editarEliminar.html')
 
 @server.route('/verusuarios/')
 def listarUsuario():
     return render_template('verUsuarios.html')
-
-
 
 
 

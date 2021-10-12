@@ -1,49 +1,54 @@
-html {
-    /* To make use of full height of page*/
-    min-height: 100%;
-    margin: 0;
-}
-body {
-    min-height: 100%;
-    margin: 0;
-    color: black;
-    background: linear-gradient(to bottom, orange, red);
+.card-body{
+  background-color: #f8f9fb; 
 }
 
-#form {
-  width: 250px;
-  margin: 0 auto;
+.col-sm{
+  border: 1px blue solid;
+  width: 350px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.row{
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-header{
+  background-color: #f0f1f3;
+  display: flex;
+  justify-content: space-between;
   height: 50px;
 }
 
-#form p {
-  text-align: center;
+.card-text{
+  color: black !important; 
 }
 
-#form label {
-  font-size: 20px;
+.card-body p{
+  color: black !important;
+  
+}
+.card-body{
+  height: 180px;
+  padding: 10px;
+}
+.btn{
+  color:black !important;
+  height: 40px;
+  width: 40px;
+  margin: 2px;
 }
 
-input[type="radio"] {
-  display: none;
+.btn-primary{
+  background-color: #d65551;
+  background-image: url("https://img.icons8.com/material-outlined/24/ffffff/trash--v1.png");
+  background-size: 100%;
 }
 
-label {
-  color: grey;
+.btn-danger{
+background-color: #337bb6;
+background-image: url("https://img.icons8.com/ios-filled/50/ffffff/pencil--v1.png");
+background-size: 100%;
 }
-
-.clasificacion {
-  direction: rtl;
-  unicode-bidi: bidi-override;
-}
-
-label:hover,
-label:hover ~ label {
-  color: orange;
-}
-
-input[type="radio"]:checked ~ label {
-  color: orange;
-}
-
 

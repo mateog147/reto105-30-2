@@ -1,30 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
     <style>
-        #myTable {
-
-width: 100%;
-font-size: 18px;
-box-sizing: border-box;
-}
-
-#myTable td{
-color: white;
-border: 2px solid;
-}
-#myTable th, #myTable td {
-text-align: left;
-padding: 12px;
-}
-
-
-#myTable tr.header1, #myTable tr:hover {
-background-color: #171f60;
-}
-.login__title
-{
-background-color: #171f60;
-}
+        .barra select
+        {
+            appearance: none;
+            -webkit-appearance: none;
+	        -moz-appearance: none;
+            max-width: 600px;
+            right: 250px;
+            top: calc(60% - 45px);
+            width: 250px;
+            height: 20px;
+            display: block;
+            margin-top: 3px;
+            background: rgb(220, 53, 20);
+            border: none;
+            border-bottom: none;
+        }
 
     </style>
     <head>
@@ -40,16 +32,15 @@ background-color: #171f60;
             <img class="header__img" src="../static/media/icons8-aeropuerto-100.png" alt="Logo" /> 
             <h2 class="header__title"><a href="/home/">Aeropuerto Matecaña Internacional</a> </h2>
         </header>
+
         <section class="login">
             <section class="login__container">
-                    <center><h2>Separa tu Vuelo</h2></center>
+                    <center><h2>Ingreso de Vuelos Nacionales</h2></center>
                     <form action="login__container--form">
-                        
-                        <label for="">Ida y Vuelta<input type="checkbox" id="cbox1" value="first_checkbox"></label>
-                        <div>
-                            <span>Fecha del vuelo:</span>
-                            <input type="date"  />
-                        </div>
+                        <input class="input" type="text" placeholder="Codigo de Vuelo" required/>
+                        <input class="input" type="text" placeholder="Aerolinea" required/>
+                        <input class="input" type="text" placeholder="Placa de la Aeronave" required/>
+                        <input class="input" type="text" placeholder="Estado Actual del Vuelo" required/>
                         <div class="login__select" style="display: flex;">
                             <div>
                                 <span style="width: 50%;">Origen</span>
@@ -90,28 +81,9 @@ background-color: #171f60;
                                 </select>
                             </div>
                         </div>
-                        <button class="button" formaction="/menu">Buscar Vuelo</button>
+                        <button class="button">Crear Vuelo</button>
                     </form>
-                    <table id="myTable">
-                    <tr class="header1">
-                        <th style="width:30%;">No. Vuelo</th>
-                        <th style="width:30%;">Aerolinea</th>
-                        <th style="width:30%;">Hora</th>
-                    </tr>
-                    <tr>
-                        <td>AV-1234</td>
-                        <td>Avianca</td>
-                        <td>6:15</td>
-                    </tr>
-                    <tr>
-                        <td>VA-9874</td>
-                        <td>VivaAir</td>
-                        <td>13:20</td>
-                    </tr>
-                    </table>
-                <button class="button" formaction="/menu/">Separar Cupo en este vuelo</button>
                 </section>
-                
         </section>
         <footer class="footer">
             <a href="/terminos">Terminos y condiciones </a>
