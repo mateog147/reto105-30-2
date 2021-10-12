@@ -43,6 +43,12 @@ def login():
 def register():
     return render_template('registro.html')
 
+@server.route('/recuperarpwd/')
+def rpwd():
+    sal = '<p>pagina para recuperar tu clave vía correo</p>'
+    sal +='<a href="/home">HOME</a>'
+    return sal
+
 @server.route('/menu')
 @server.route('/menu/')
 @server.route('/menu/<string:usr>')

@@ -23,6 +23,13 @@ body{
     font-family: 'Mulish', sans-serif;
     font-weight: bold;
 }
+.header__title a{
+    color: whitesmoke;
+    padding-right: 2rem;
+    font-family: 'Mulish', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+}
 
 .input{
     background-color: transparent;
