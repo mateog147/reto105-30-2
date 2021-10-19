@@ -19,10 +19,10 @@
     <section class="login">
         <section class="login__container">
             <h2 class="login__title">Inicia sesión</h2>
-            <form class="login__container--form" action="/madmin/">
-                <input class="input" type="email" placeholder="Correo" required/>
-                <input class="input" type="password" placeholder="Contraseña" required/>
-                <button class="button">Iniciar sesión</button>
+            <form class="login__container--form" action="/login/" method="post">
+                <input class="input" type="email" placeholder="Correo" name="email" required/>
+                <input class="input" type="password" placeholder="Contraseña" name="pwd" required/>
+                <input class="button" type="submit" value="Iniciar sesión"> 
                 <div class="login__container--forget-pwd">
                     <a href="/recuperarpwd/">Olvide mi Contraseña</a>
                 </div>

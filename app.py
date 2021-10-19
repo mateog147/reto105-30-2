@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, render_template, redirect, session, flash, request
 from flask.templating import render_template
+from bd import cargardatos
 
 server = Flask('__name__')
 
@@ -26,9 +27,49 @@ def contact():
     return render_template('contacto.html')
 
 @server.route('/login')
-@server.route('/login/')
+@server.route('/login/',methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method=='GET':
+        return render_template('login.html')
+    else:
+        usr = request.form['email']
+        clave = request.form['pwd']
+        print(f'me pidieron el menu para {usr}')
+        #intento conectarme
+        try:
+            dat = None
+            if usr==None:
+                msg = 'ERROR: Se Debe suministrar un usuario'
+            elif clave==None:
+                msg = 'ERROR: Se Debe suministrar una clave'
+            else:
+                # Procedo a ubicar el usuario indicado
+                sql = f"SELECT nombre, perfil FROM usuarios WHERE email='{usr}' AND contraseña='{clave}'"
+                #print('arme a consulta')
+                dat = cargardatos(sql)
+                if len(dat)==0:
+                    msg ='ERROR:: Usuario o clave no validos'
+                else:
+                    msg = 'Ok'
+                    profile = dat[0][1]
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+            dat = None
+        sal = '<h2>Se realizó la consulta</h2><p>'
+        sal += msg
+        sal += '</p>'
+        if msg=="Ok":
+            if(profile == 'U'):
+                return redirect('/menu/')
+            elif(profile == 'A'):
+                return redirect('/madmin/')
+            elif(profile == 'P'):
+                return redirect('/mpiloto/')
+
+        return sal
+
 
 @server.route('/registro')
 @server.route('/registro/')
