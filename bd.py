@@ -10,3 +10,18 @@ def cargardatos(sql) ->list:
     except Exception:
         res = None
     return res
+
+def resgistrardato(sql) -> int:
+    #Ejecuta consultas de acción : INSERT, DELETE,UPDATE
+    try:
+        #primera acción conectarme a la base de datos
+        with sqlite3.connect(URL_DB) as conec:  #se hace con un manejador de contexto para cerrar la conección una vez culminado el proceso
+            #creo un area intermedia para gestion de los contenidos(tambien llamado cursor)
+            cur = conec.cursor()
+            #procedo con la consulta
+            res = cur.execute(sql).rowcount
+            if res !=0: #VERIFICO SI HAY ALGUN CAMBIO
+                conec.commit() #ASEGURO QUE SER GUARDE EL CAMBIO
+    except:
+        res = 0
+    return res

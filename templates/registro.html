@@ -67,20 +67,20 @@
         <section class="login">
             <section class="login__container">
                     <h2>Crea tu Usuario</h2>
-                    <form action="login__container--form">
-                        <input class="input" type="text" placeholder="Nombre" required/>
-                        <input class="input" type="text" placeholder="Apellidos" required/>
+                    <form action="/registro/" method="post">
+                        <input class="input" type="text" name="nombre" placeholder="Nombre" required/>
+                        <input class="input" type="text" name="apellido" placeholder="Apellidos" required/>
                         <p>Tipo de Documento</p>
-                        <select class="select">
+                        <select class="select" name="tipo">
                             <option>CC</option>
                             <option>TI</option>
                             <option>CE</option>
                             <option>PASAPORTE</option>
                             </select>
-                        <input class="input" type="text" placeholder="Numero de Documento" required/>
-                        <input class="input" type="email" placeholder="Correo Electronico" required/>
-                        <input class="input" type="password" placeholder="Ingrese la Contraseña" required/>
-                        <input class="input" type="password" placeholder="Confirme la Contraseña" required/>
+                        <input class="input" type="text" name='documento' placeholder="Numero de Documento" required/>
+                        <input class="input" type="email" name='email' placeholder="Correo Electronico" required/>
+                        <input class="input" type="password" name="pwd" placeholder="Ingrese la Contraseña" required/>
+                        <input class="input" type="password" name="pwd2" placeholder="Confirme la Contraseña" required/>
                         <div class="container">
                             <div id="captcha" class="captcha"></div>
                             <div class="restart">
@@ -104,9 +104,9 @@
                               
                               </div!>
                         <!--button class="button" value="Registame" onclick="validateCaptcha()"-->
-                        <button class="button" value="Registrarme" formaction="/login/"">
+                        <input class="button" type="submit" value="Registrarme"> 
                     </form>
-                    <a href="/login/">Registrarse</a>
+                    <a href="/login/">Regresar</a>
                 </section>
         </section>
         <footer class="footer">

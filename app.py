@@ -1,6 +1,9 @@
 from flask import Flask, render_template, redirect, session, flash, request
 from flask.templating import render_template
-from bd import cargardatos
+from bd import cargardatos, resgistrardato
+from datetime import datetime
+import math
+import os
 
 server = Flask('__name__')
 
@@ -28,14 +31,16 @@ def contact():
 
 @server.route('/login')
 @server.route('/login/',methods=['GET', 'POST'])
+
 def login():
+    #Si el metodo HTTP es GET devuelvo rederizado la  pagina de Login
     if request.method=='GET':
         return render_template('login.html')
+    #Si el metodo es post tomo los valores de formulario
     else:
         usr = request.form['email']
         clave = request.form['pwd']
-        print(f'me pidieron el menu para {usr}')
-        #intento conectarme
+        #intento conectarme a la base de datos
         try:
             dat = None
             if usr==None:
@@ -44,22 +49,27 @@ def login():
                 msg = 'ERROR: Se Debe suministrar una clave'
             else:
                 # Procedo a ubicar el usuario indicado
+                #Armo la consulta SQL
                 sql = f"SELECT nombre, perfil FROM usuarios WHERE email='{usr}' AND contraseña='{clave}'"
                 #print('arme a consulta')
+                #Ejecuto la consulta 
                 dat = cargardatos(sql)
+                #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
                 if len(dat)==0:
                     msg ='ERROR:: Usuario o clave no validos'
+                #De lo contrario capturo el perfil del usuario y creo las variables de sesion
                 else:
+                    #print('LLegue hasta aca')
                     msg = 'Ok'
-                    profile = dat[0][1]
+                    session['nombre']=(dat[0][0])
+                    profile=dat[0][1]
                     
         except Exception:
             msg = 'ERROR: Por favor intente luego'
             print(Exception)
             dat = None
-        sal = '<h2>Se realizó la consulta</h2><p>'
-        sal += msg
-        sal += '</p>'
+
+        #Si la consult fue exitosa verifico el usuario y devuelvo el menu correspondiente menu
         if msg=="Ok":
             if(profile == 'U'):
                 return redirect('/menu/')
@@ -67,14 +77,53 @@ def login():
                 return redirect('/madmin/')
             elif(profile == 'P'):
                 return redirect('/mpiloto/')
-
-        return sal
+        else:
+            return render_template('error.html',mensaje=msg)
 
 
 @server.route('/registro')
-@server.route('/registro/')
+@server.route('/registro/',methods=['GET', 'POST'])
 def register():
-    return render_template('registro.html')
+    #Si el metodo HTTP es GET devuelvo rederizado la  pagina de Registro
+    if request.method == 'GET':
+        return render_template('registro.html')
+    #De lo contrario tomo los valores del formulario 
+    else:
+        nombre=request.form['nombre']
+        apellido=request.form['apellido']
+        tipo=request.form['apellido']
+        doc=request.form['documento']
+        correo=request.form['email']
+        pwd1=request.form['pwd']
+        pwd2=request.form['pwd2']
+        print(nombre)
+        try:
+            dat = None
+            # Valido los datos 
+            if nombre==None or apellido==None:
+                msg = 'ERROR: SE DEBE INGRESAR EL NOMBRE'
+            elif correo==None:
+                msg = 'ERROR: SE DEBE INGRESAR UN CORREO'
+            elif pwd1 != pwd2:
+                msg = 'LAS CONTRASEÑAS NO COINCIDEN'
+            else:
+                # Valido los datos 
+                sql = f"INSERT INTO usuarios (nombre, apellidos, tipodocumento, documento, email, contraseña) VALUES ('{nombre}', '{apellido}', '{tipo}', '{doc}', '{correo}', '{pwd1}')"
+                #print('arme a consulta')
+                res = resgistrardato(sql)
+                if res==0:
+                    msg ='ERROR AL CARGAR LA INFORMACIÓN'
+                else:
+                    msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+        if msg == 'Ok':
+            return redirect('/home/')
+        else:
+            return render_template('error.html',mensaje=msg)
+
 
 @server.route('/recuperarpwd/')
 def rpwd():
@@ -89,7 +138,7 @@ def rpwd():
 @server.route('/menu/')
 @server.route('/menu/<string:usr>')
 def userMenu(usr=None):
-    return render_template('menuUsuario.html')
+    return render_template('menuUsuario.html',nombre=session['nombre'])
 
 @server.route('/madmin')
 @server.route('/madmin/')
@@ -101,7 +150,7 @@ def adminMenu(usr=None):
 @server.route('/mpiloto/')
 @server.route('/mpiloto/<string:usr>')
 def pilotMenu(usr=None):
-    return render_template('menuPiloto.html')
+    return render_template('menuPiloto.html',nombre=session['nombre'])
 
 @server.route('/calificar')
 @server.route('/calificar/')
@@ -148,4 +197,5 @@ def listarUsuario():
 
 
 if __name__=='__main__':
+    server.secret_key=os.urandom(12)
     server.run(debug=True,port=8080)
