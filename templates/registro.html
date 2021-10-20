@@ -39,11 +39,7 @@
     text-decoration: none;
   }
   
-  .errmsg {
-    color: black;
-    padding: 5px;
-    transition: 0.5s ease;
-    }
+
     .button1{
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
@@ -67,6 +63,7 @@
         <section class="login">
             <section class="login__container">
                     <h2>Crea tu Usuario</h2>
+                    <h2 class="errmsg">{{error}}</h2>
                     <form action="/registro/" method="post">
                         <input class="input" type="text" name="nombre" placeholder="Nombre" required/>
                         <input class="input" type="text" name="apellido" placeholder="Apellidos" required/>

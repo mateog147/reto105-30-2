@@ -172,6 +172,11 @@ body{
     height: 40px;
     margin: 10px 0px;
 }
+.errmsg {
+    color: black;
+    padding: 5px;
+    transition: 0.5s ease;
+    }
 
 .img-main{
     width: 600px;

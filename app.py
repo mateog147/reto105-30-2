@@ -78,7 +78,7 @@ def login():
             elif(profile == 'P'):
                 return redirect('/mpiloto/')
         else:
-            return render_template('error.html',mensaje=msg)
+            return render_template('login.html',error=msg)
 
 
 @server.route('/registro')
@@ -86,7 +86,7 @@ def login():
 def register():
     #Si el metodo HTTP es GET devuelvo rederizado la  pagina de Registro
     if request.method == 'GET':
-        return render_template('registro.html')
+        return render_template('registro.html',error="")
     #De lo contrario tomo los valores del formulario 
     else:
         nombre=request.form['nombre']
@@ -122,7 +122,7 @@ def register():
         if msg == 'Ok':
             return redirect('/home/')
         else:
-            return render_template('error.html',mensaje=msg)
+            return render_template('registro.html',error=msg)
 
 
 @server.route('/recuperarpwd/')
