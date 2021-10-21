@@ -42,13 +42,14 @@ def login():
     else:
         usr = escape (request.form['email'])
         clave = escape (request.form['pwd'])
+        msg=''
         #intento conectarme a la base de datos
         try:
             dat = None
             if usr==None:
                 msg = 'ERROR: Se Debe suministrar un usuario'
             elif clave==None:
-                res = 'ERROR: Se Debe suministrar una clave'
+                msg = 'ERROR: Se Debe suministrar una clave'
             else:
                 # Procedo a ubicar el usuario indicado
                 #Armo la consulta SQL
@@ -57,25 +58,30 @@ def login():
                 #Ejecuto la consulta 
                 dat = cargardatos(sql)
                 #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                print('estoy afuera del if')
+                print(dat)
                 if len(dat)==0:
-                    res ='ERROR:: Usuario o clave no validos'
+                    msg ='ERROR:: Usuario no valido'
+                    print(msg)
                 #De lo contrario capturo el perfil del usuario y creo las variables de sesion
                 else:
                     cbd = dat[0][2] #EXTRAIGO CONTRASEÑA 
                     if check_password_hash(cbd,clave): #COMPARO CONTRASEÑA ENCIPTADA CON LA CONTRASEÑA PUESTA.
                         session.clear()
                         #print('LLegue hasta aca')
-                        res = 'Ok'
+                        msg = 'Ok'
                         session['nombre']=(dat[0][0])
                         profile=dat[0][1]
+                    else:
+                        msg ='ERROR:: clave invalida'
                         
         except Exception:
-            res = 'ERROR: Por favor intente luego'
+            msg = 'ERROR: Por favor intente luego'
             print(Exception)
             dat = None
 
         #Si la consult fue exitosa verifico el tipo y devuelvo el menu correspondiente menu
-        if res=='Ok':
+        if msg =='Ok':
             if(profile == 'U'):
                 return redirect('/menu/')
             elif(profile == 'A'):
@@ -83,7 +89,7 @@ def login():
             elif(profile == 'P'):
                 return redirect('/mpiloto/')
         else:
-            return render_template('login.html',error=res)
+            return render_template('login.html',error=msg)
 
 
 @server.route('/registro')
