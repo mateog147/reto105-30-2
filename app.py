@@ -13,6 +13,7 @@ server = Flask('__name__')
 @server.route('/home/')
 @server.route('/index/')
 def index():
+    session['perfil']=None
     return render_template('index.html')
 
 @server.route('/nosotros')
@@ -72,6 +73,7 @@ def login():
                         msg = 'Ok'
                         session['nombre']=(dat[0][0])
                         profile=dat[0][1]
+                        session['perfil']=dat[0][1]
                     else:
                         msg ='ERROR:: clave invalida'
                         
@@ -88,6 +90,8 @@ def login():
                 return redirect('/madmin/')
             elif(profile == 'P'):
                 return redirect('/mpiloto/')
+            else:
+                return render_template('login.html',error='Usuario invalido, contacte al administrador')
         else:
             return render_template('login.html',error=msg)
 
@@ -150,19 +154,30 @@ def rpwd():
 @server.route('/menu/')
 @server.route('/menu/<string:usr>')
 def userMenu(usr=None):
-    return render_template('menuUsuario.html',nombre=session['nombre'])
+    if session['perfil']=='U':
+        return render_template('menuUsuario.html',nombre=session['nombre'])
+    else:
+        return render_template('error.html',mensaje='Acseso no permitido')
 
 @server.route('/madmin')
 @server.route('/madmin/')
 @server.route('/madmin/<string:usr>')
 def adminMenu(usr=None):
-    return render_template('menuAdmin.html')
+    if session['perfil']=='A':
+        return render_template('menuAdmin.html')
+    else:
+        return render_template('error.html',mensaje='Acseso no permitido')
+    
 
 @server.route('/mpiloto')
 @server.route('/mpiloto/')
 @server.route('/mpiloto/<string:usr>')
 def pilotMenu(usr=None):
-    return render_template('menuPiloto.html',nombre=session['nombre'])
+    if session['perfil']=='P':
+        return render_template('menuPiloto.html',nombre=session['nombre'])
+    else:
+        return render_template('error.html',mensaje='Acseso no permitido')
+
 
 @server.route('/calificar')
 @server.route('/calificar/')
@@ -194,93 +209,97 @@ def verCal(usr=None):
 @server.route('/roles/<string:met>/',methods=['GET', 'POST'])
 @server.route('/roles/',methods=['GET', 'POST'])
 def permisosRoles(met=None):
+    #valido que este logeado un admin
+    if session['perfil']=='A':
     #Si el metodo de la consulta HTTP  es get decuelvo el formulario limpio
-    if request.method == 'GET':
-        return render_template('permisosRoles.html')
+        if request.method == 'GET':
+            return render_template('permisosRoles.html')
 
-    #Si el metodo el post valido si en la url voy a buscar o guardar
-    else:
-        #si el metodo no es buscar
-        if met==None:
-            cc=request.form['cedula']
-            nom=request.form['nombre']
-            per=request.form['perfil']
-            if per == 'Usuario':
-                perfil = 'U'
-            elif per == 'Administrador':
-                perfil = 'A'
-            elif per == 'Piloto':
-                perfil = 'P'
-            elif per == 'Inactivo':
-                perfil = 'I'
-            try:
-                if cc==None:
-                    msg = 'ERROR: Se Debe suministrar un usuario'
-                else:
-                    # Procedo a actualizar el usuario indicado
-                    #Armo la consulta SQL
-                    sql = f"UPDATE usuarios SET perfil = '{perfil}' WHERE documento='{cc}' AND nombre='{nom}'"
-                    #print('arme a consulta')
-                    #Ejecuto la consulta 
-                    res = resgistrardato(sql)
-                    #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
-                    #print('estoy afuera del if')
-                    #print(dat)
-                    if res==0:
-                        msg ='ERROR:: Usuario no valido'
-                        print(msg)
-                    #De lo contrario capturo el perfil del usuario y creo las variables de sesion
-                    else:                    
-                        msg = 'Ok'
-                            
-            except Exception:
-                msg = 'ERROR: Por favor intente luego'
-                print(Exception)
-            if msg == 'Ok':
-                return redirect('/madmin/')
-            else:
-                return render_template('permisosRoles.html',nombre = msg)
-
-            return "Hola no eres nadie"
-        #si el metodo es buscar
+        #Si el metodo el post valido si en la url voy a buscar o guardar
         else:
-            cc=request.form['cedula']
-            try:
-                if cc==None:
-                    msg = 'ERROR: Se Debe suministrar un usuario'
-                else:
-                    # Procedo a ubicar el usuario indicado
-                    #Armo la consulta SQL
-                    sql = f"SELECT nombre, perfil, contraseña FROM usuarios WHERE documento='{cc}'"
-                    #print('arme a consulta')
-                    #Ejecuto la consulta 
-                    dat = cargardatos(sql)
-                    #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
-                    #print('estoy afuera del if')
-                    #print(dat)
-                    if len(dat)==0:
-                        msg ='ERROR:: Usuario no valido'
-                        print(msg)
-                    #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+            #si el metodo no es buscar
+            if met==None:
+                cc=request.form['cedula']
+                nom=request.form['nombre']
+                per=request.form['perfil']
+                if per == 'Usuario':
+                    perfil = 'U'
+                elif per == 'Administrador':
+                    perfil = 'A'
+                elif per == 'Piloto':
+                    perfil = 'P'
+                elif per == 'Inactivo':
+                    perfil = 'I'
+                try:
+                    if cc==None:
+                        msg = 'ERROR: Se Debe suministrar un usuario'
                     else:
-                        nom = dat[0][0]
-                        if dat[0][1] == 'U':
-                            per = 'Usuario'
-                        elif dat[0][1] == 'A':
-                            per = 'Administrador'
-                        elif dat[0][1] == 'P':
-                            per = 'Piloto'
-                        elif dat[0][1] == 'I':
-                            per = 'Inactivo'                     
-                        msg = 'Ok'
-                            
-            except Exception:
-                msg = 'ERROR: Por favor intente luego'
-                print(Exception)
-            if msg == 'Ok':
-                return render_template('permisosRoles.html', nombre = nom, perfil = per, cedula = cc)
+                        # Procedo a actualizar el usuario indicado
+                        #Armo la consulta SQL
+                        sql = f"UPDATE usuarios SET perfil = '{perfil}' WHERE documento='{cc}' AND nombre='{nom}'"
+                        #print('arme a consulta')
+                        #Ejecuto la consulta 
+                        res = resgistrardato(sql)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        #print('estoy afuera del if')
+                        #print(dat)
+                        if res==0:
+                            msg ='ERROR:: Usuario no valido'
+                            print(msg)
+                        #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+                        else:                    
+                            msg = 'Ok'
+                                
+                except Exception:
+                    msg = 'ERROR: Por favor intente luego'
+                    print(Exception)
+                if msg == 'Ok':
+                    return redirect('/madmin/')
+                else:
+                    return render_template('permisosRoles.html',nombre = msg)
+
+                return "Hola no eres nadie"
+            #si el metodo es buscar
             else:
-                return render_template('permisosRoles.html',nombre = msg)
+                cc=request.form['cedula']
+                try:
+                    if cc==None:
+                        msg = 'ERROR: Se Debe suministrar un usuario'
+                    else:
+                        # Procedo a ubicar el usuario indicado
+                        #Armo la consulta SQL
+                        sql = f"SELECT nombre, perfil, contraseña FROM usuarios WHERE documento='{cc}'"
+                        #print('arme a consulta')
+                        #Ejecuto la consulta 
+                        dat = cargardatos(sql)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        #print('estoy afuera del if')
+                        #print(dat)
+                        if len(dat)==0:
+                            msg ='ERROR:: Usuario no valido'
+                            print(msg)
+                        #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+                        else:
+                            nom = dat[0][0]
+                            if dat[0][1] == 'U':
+                                per = 'Usuario'
+                            elif dat[0][1] == 'A':
+                                per = 'Administrador'
+                            elif dat[0][1] == 'P':
+                                per = 'Piloto'
+                            elif dat[0][1] == 'I':
+                                per = 'Inactivo'                     
+                            msg = 'Ok'
+                                
+                except Exception:
+                    msg = 'ERROR: Por favor intente luego'
+                    print(Exception)
+                if msg == 'Ok':
+                    return render_template('permisosRoles.html', nombre = nom, perfil = per, cedula = cc)
+                else:
+                    return render_template('permisosRoles.html',nombre = msg)
+    else:
+        return render_template('error.html',mensaje='Acseso no permitido')
 
 @server.route('/registrovuelo/')
 def registroVuelo():
