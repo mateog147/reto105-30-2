@@ -20,25 +20,28 @@
                     <form action="/madmin/">
                         <p>Documento</p>
                         <div>
-                        <select class="select" style="width: 60px;">
-                            <option>CC</option>
-                            <option>TI</option>
-                            <option>CE</option>
+                            <select class="select" style="width: 60px;">
+                                <option>CC</option>
+                                <option>TI</option>
+                                <option>CE</option>
                             </select>
-                            <input class="input" type="text" placeholder="Numero de Documento" style="width: 200px;" required/>
-                            <button class="button" formaction="/roles/">Buscar</button>
+                            <input class="input" type="text" placeholder="Numero de Documento" name="cedula" value="{{cedula}}" style="width: 200px;" required/>
+                            <input class="input" type="text"  name="nombre" value="{{nombre}}" style="display: none;"> 
+                            <button class="button" formaction="/roles/buscar/" formmethod="post">Buscar</button>
                         </div>
-                        <p>Nombre: *Nombre Usuario* </p>
+                        <p>Nombre: {{nombre}}</p>
+                        <p>Cedula: {{cedula}}</p>
                         <div style="width: 100%;">
-                        <p style="width: 10px;">Perfil: </p>
-                        <select class="select" style="width: 120px;">
+                        <p style="width: 10px;">Perfil Actual: {{perfil}}</p>
+                        <select class="select" style="width: 120px;" name="perfil">
                             <option>Piloto</option>
                             <option>Usuario</option>
                             <option>Administrador</option>
-                            </select>
+                            <option>Inactivo</option>
+                        </select>
                         </div>
                         
-                        <button class="button">Guardar Cambios</button>
+                        <button class="button" type="submit" formaction="/roles/" formmethod="post">Guardar Cambios</button>
                     </form>
                 </section>
         </section>
