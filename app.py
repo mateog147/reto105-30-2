@@ -311,7 +311,32 @@ def editoVuelo():
 
 @server.route('/verusuarios/')
 def listarUsuario():
-    return render_template('verUsuarios.html')
+    if session['perfil']!='A':
+        return render_template('error.html',mensaje='Acseso no permitido')
+    else:
+        try:
+            #Armo la consulta SQL
+            sql = f"SELECT * FROM usuarios"
+            #print('arme a consulta')
+            #Ejecuto la consulta 
+            dat = cargardatos(sql)
+            #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+            #print('estoy afuera del if')
+            #print(dat)
+            if len(dat)==0:
+                msg ='No hay usuarios registrados'
+                print(msg)
+            #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+            else:                   
+                msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+        if msg == 'Ok':
+            return render_template('verUsuarios.html',usuarios=dat)
+        else:
+            return render_template('error.html',mensaje=msg)
 
 
 
