@@ -127,6 +127,7 @@ body{
 }
 .login__container--form label{
     font-size: 14px;
+    width: 100%;
     
 }
 .login__container--forget-pwd{

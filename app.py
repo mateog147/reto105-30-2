@@ -302,8 +302,53 @@ def permisosRoles(met=None):
         return render_template('error.html',mensaje='Acseso no permitido')
 
 @server.route('/registrovuelo/')
+@server.route('/registrovuelo/',methods=['GET', 'POST'])
 def registroVuelo():
-    return render_template('registroVuelo.html')
+    if session['perfil']!='A':
+        return render_template('error.html',mensaje='Acseso no permitido')
+    else:
+        if request.method == 'GET':
+            return render_template('registroVuelo.html')
+        else:
+            codigo=request.form['codigo']
+            empresa=request.form['empresa']
+            matricula=request.form['matricula']
+            fsalida=request.form['fechaSalida']
+            hsalida=request.form['horaSalida']
+            fllegada=request.form['fechaLlegada']
+            hllegada=request.form['horaLlegada']
+            origen=request.form['origen']
+            destino=request.form['destino']
+            piloto=request.form['piloto']
+
+            #return(f"La fecha de salida es:{fhsalida}")
+        
+        try:
+            # Valido los datos 
+            if codigo==None or empresa==None:
+                msg = 'ERROR: VALIDE LOS DATOS DE ENTRADA'
+            elif origen==None or destino==None:
+                msg = 'ERROR: VALIDE LOS DATOS DE ENTRADA'
+            else:
+                # Valido los datos            
+                fhsalida=datetime.fromisoformat(fsalida+' '+hsalida)
+                fhllegada=datetime.fromisoformat(fllegada+' '+hllegada) 
+                sql = f"INSERT INTO vuelos (codigo, aerolinea, matricula, destino, origen, horasalida, horallegada, piloto) VALUES ('{codigo}', '{empresa}', '{tipo}', '{matricula}', '{destino}', '{origen}', '{fhsalida}', '{fhllegada}', '{piloto}')"
+                #print('arme a consulta') 
+                res = resgistrardato(sql)
+                if res==0:
+                    msg ='ERROR AL CARGAR LA INFORMACIÓN'
+                else:
+                    msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception.with_traceback)
+        if msg == 'Ok':
+            return redirect('/madmin/')
+        else:
+            return render_template('registroVuelo.html',error=msg)
+
 
 @server.route('/editarvuelo/')
 def editoVuelo():

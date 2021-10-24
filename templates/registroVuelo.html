@@ -35,16 +35,29 @@
 
         <section class="login">
             <section class="login__container">
-                    <center><h2>Ingreso de Vuelos Nacionales</h2></center>
-                    <form action="login__container--form">
-                        <input class="input" type="text" placeholder="Codigo de Vuelo" required/>
-                        <input class="input" type="text" placeholder="Aerolinea" required/>
-                        <input class="input" type="text" placeholder="Placa de la Aeronave" required/>
-                        <input class="input" type="text" placeholder="Estado Actual del Vuelo" required/>
+                    <center><h2>Ingreso Vuelos Nacionales</h2></center>
+                    <h2 class="errmsg">{{error}}</h2>
+                    <form class="login__container--form">
+                        <input class="input" type="text" name="codigo" placeholder="Codigo de Vuelo" required/>
+                        <input class="input" type="text" name="empresa" placeholder="Aerolinea" required/>
+                        <input class="input" type="text" name="matricula" placeholder="Matricula de la Aeronave" required/>
+                        <input class="input" type="text" name="piloto" placeholder="Piloto (cedula)" required/>
+                        <label for="horaSalida">Fecha y hora salida</label>
+                        <div>
+                            <input class="select" type="date" name="fechaSalida"  required/>
+                            <input class="select" type="time" name="horaSalida"  required/>
+                        </div>
+
+                        <label>Fecha y hora llegada</label>
+                        <div>
+                            <input class="select" type="date" name="fechaLlegada"  required/>
+                            <input class="select" type="time" name="horaLlegada"  required/>
+                        </div>
+
                         <div class="login__select" style="display: flex;">
                             <div>
                                 <span style="width: 50%;">Origen</span>
-                                <select class="select" style="width: 150px;">
+                                <select class="select" name="origen" style="width: 150px;">
                                     <option value="">-</option>
                                     <option value="Armenia">Armenia-AXM</option>
                                     <option value="Barranquilla">Barranquilla-BAQ</option>
@@ -63,7 +76,7 @@
                             </div>
                             <div>
                                 <span style="width: 50%;">Destino</span>
-                                <select class="select" style="width: 150px;">
+                                <select class="select" name="destino" style="width: 150px;">
                                     <option value="">-</option>
                                     <option value="Armenia">Armenia-AXM</option>
                                     <option value="Barranquilla">Barranquilla-BAQ</option>
@@ -81,7 +94,7 @@
                                 </select>
                             </div>
                         </div>
-                        <button class="button">Crear Vuelo</button>
+                        <button class="button" formaction="/registrovuelo/" formmethod="post">Crear Vuelo</button>
                     </form>
                 </section>
         </section>
