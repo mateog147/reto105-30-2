@@ -6,6 +6,7 @@ import math
 import os
 from werkzeug.security import check_password_hash, generate_password_hash
 from markupsafe import escape
+import traceback
 
 server = Flask('__name__')
 
@@ -16,10 +17,13 @@ def index():
     session['perfil']=None
     return render_template('index.html')
 
+
+
 @server.route('/nosotros')
 @server.route('/nosotros/')
 def about():
     return render_template('sobreNosotros.html')
+
 
 
 @server.route('/terminos')
@@ -27,10 +31,14 @@ def about():
 def tercond():
     return render_template('terminosCondiciones.html')
 
+
+
 @server.route('/contactanos')
 @server.route('/contactanos/')
 def contact():
     return render_template('contacto.html')
+
+
 
 @server.route('/login')
 @server.route('/login/',methods=['GET', 'POST'])
@@ -96,6 +104,7 @@ def login():
             return render_template('login.html',error=msg)
 
 
+
 @server.route('/registro')
 @server.route('/registro/',methods=['GET', 'POST'])
 def register():
@@ -141,6 +150,7 @@ def register():
             return render_template('registro.html',error=msg)
 
 
+
 @server.route('/recuperarpwd/')
 def rpwd():
     sal = '<head><link rel="stylesheet" href="../static/css/style.css"></head>'
@@ -150,6 +160,8 @@ def rpwd():
     sal += '</div>'
     return sal
 
+
+
 @server.route('/menu')
 @server.route('/menu/')
 @server.route('/menu/<string:usr>')
@@ -158,6 +170,8 @@ def userMenu(usr=None):
         return render_template('menuUsuario.html',nombre=session['nombre'])
     else:
         return render_template('error.html',mensaje='Acseso no permitido')
+
+
 
 @server.route('/madmin')
 @server.route('/madmin/')
@@ -169,6 +183,7 @@ def adminMenu(usr=None):
         return render_template('error.html',mensaje='Acseso no permitido')
     
 
+
 @server.route('/mpiloto')
 @server.route('/mpiloto/')
 @server.route('/mpiloto/<string:usr>')
@@ -179,11 +194,14 @@ def pilotMenu(usr=None):
         return render_template('error.html',mensaje='Acseso no permitido')
 
 
+
 @server.route('/calificar')
 @server.route('/calificar/')
 @server.route('/calificar/<string:cod>/<string:usr>')
 def calificarVuelo(usr=None,cod=None):
     return render_template('calificarVuelo.html')
+
+
 
 @server.route('/separavuelo')
 @server.route('/separavuelo/')
@@ -191,19 +209,55 @@ def calificarVuelo(usr=None,cod=None):
 def separarVuelo(usr=None):
     return render_template('separarVuelo.html')
 
+
+
 @server.route('/vervuelos/')
 @server.route('/vervuelos/<string:usr>')
+@server.route('/vervuelos/',methods=['GET', 'POST'])
+
 def listarVuelos(usr=None):
-    return render_template('verVuelos.html')
+    if session['perfil']==None or session['perfil']=='I':
+        return render_template('error.html',mensaje='Acseso no permitido')
+    else:
+        try:
+            #Armo la consulta SQL
+            sql = f"SELECT * FROM vuelos"
+            #print('arme a consulta')
+            #Ejecuto la consulta 
+            dat = cargardatos(sql)
+            #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+            #print('estoy afuera del if')
+            #print(dat)
+            if len(dat)==0:
+                msg ='No hay usuarios registrados'
+                print(msg)
+            #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+            else:                   
+                msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+            traceback.print_exc()
+        if msg == 'Ok':
+            return render_template('verVuelos.html',vuelos=dat)
+        else:
+            return render_template('error.html',mensaje=msg)
+
+
 
 @server.route('/editarusuario/')
 def editUser():
     return render_template('editarEliminarUsuario.html')
 
+
+
 @server.route('/calificaciones/')
 @server.route('/calificaciones/<string:usr>')
 def verCal(usr=None):
     return render_template('comentarios.html')
+
+
 
 @server.route('/roles')
 @server.route('/roles/<string:met>/',methods=['GET', 'POST'])
@@ -301,6 +355,8 @@ def permisosRoles(met=None):
     else:
         return render_template('error.html',mensaje='Acseso no permitido')
 
+
+
 @server.route('/registrovuelo/')
 @server.route('/registrovuelo/',methods=['GET', 'POST'])
 def registroVuelo():
@@ -321,8 +377,6 @@ def registroVuelo():
             destino=request.form['destino']
             piloto=request.form['piloto']
 
-            #return(f"La fecha de salida es:{fhsalida}")
-        
         try:
             # Valido los datos 
             if codigo==None or empresa==None:
@@ -333,7 +387,7 @@ def registroVuelo():
                 # Valido los datos            
                 fhsalida=datetime.fromisoformat(fsalida+' '+hsalida)
                 fhllegada=datetime.fromisoformat(fllegada+' '+hllegada) 
-                sql = f"INSERT INTO vuelos (codigo, aerolinea, matricula, destino, origen, horasalida, horallegada, piloto) VALUES ('{codigo}', '{empresa}', '{tipo}', '{matricula}', '{destino}', '{origen}', '{fhsalida}', '{fhllegada}', '{piloto}')"
+                sql = f"INSERT INTO vuelos (codigo, aerolinea, matricula, destino, origen, horasalida, horallegada, piloto) VALUES ('{codigo}', '{empresa}', '{matricula}', '{destino}', '{origen}', '{fhsalida}', '{fhllegada}', '{piloto}')"
                 #print('arme a consulta') 
                 res = resgistrardato(sql)
                 if res==0:
@@ -343,16 +397,20 @@ def registroVuelo():
                     
         except Exception:
             msg = 'ERROR: Por favor intente luego'
-            print(Exception.with_traceback)
+            print(Exception)
+            traceback.print_exc()
         if msg == 'Ok':
             return redirect('/madmin/')
         else:
             return render_template('registroVuelo.html',error=msg)
 
 
+
 @server.route('/editarvuelo/')
 def editoVuelo():
     return render_template('editarEliminar.html')
+
+
 
 @server.route('/verusuarios/')
 def listarUsuario():

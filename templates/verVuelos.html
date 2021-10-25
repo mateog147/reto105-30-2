@@ -132,66 +132,31 @@
 <section class="wkarea">
   <center><h2 style="color: white;" class="login__title">BUSCAR VUELOS <img class="header__img" align = 'center' src="../static/media/buscarvuelo.png" alt="Logo"></h2></center>
   
-
-
 <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar Vuelo por codigo" title="Codigo de Vuelo">
 
 <table id="myTable">
   <tr class="header1">
     <th style="width:10%;">No. Vuelo</th>
     <th style="width:16%;">Aerolinea</th>
+    <th style="width:16%;">Matricula</th>
     <th style="width:16%;">Destino</th>
     <th style="width:16%;">Procedente</th>
     <th style="width:10%;">Hora Salida</th>
     <th style="width:10%;">Hora Llegada</th>
     <th style="width:20%;">Estado</th>
   </tr>
+  {% for dat in vuelos %}
   <tr>
-    <td>LN8520</td>
-    <td>LATAM Airlines</td>
-    <td>BUCARAMANGA</td>
-    <td> </td>
-    <td>05:00 PM</td>
-    <td>10:30 PM</td>
-    <td>ITINERARIO</td>
+    <td style="width:5%;">{{dat[0]}}</td>
+    <td style="width:15%;">{{dat[1]}}</td>
+    <td style="width:15%;">{{dat[2]}}</td>
+    <td style="width:10%;">{{dat[3]}}</td>
+    <td style="width:10%;">{{dat[4]}}</td>
+    <td style="width:15%;">{{dat[5]}}</td>
+    <td style="width:10%;">{{dat[6]}}</td>
+    <td style="width:10%;">{{dat[7]}}</td>
   </tr>
-  <tr>
-    <td>VC6758</td>
-    <td>Viva Air Colombia</td>
-    <td>BOGOTA</td>
-    <td> </td>
-    <td>04:00 PM</td>
-    <td>10:30 PM</td>
-    <td>ITINERARIO</td>
-  </tr>
-  <tr>
-    <td>AV8550</td>
-    <td>AVIANCA</td>
-    <td>PEREIRA</td>
-    <td>BARRANQUILLA</td>
-    <td>04:30 PM</td>
-    <td>7:30 PM</td>
-    <td>EN VUELO</td>
-  </tr>
-  <tr>
-    <td>VC5248</td>
-    <td>AVIANCA</td>
-    <td>PEREIRA</td>
-    <td> BOGOTA </td>
-    <td>04:00 PM</td>
-    <td>5:30 PM</td>
-    <td>ITINERARIO</td>
-  </tr>
-  <tr>
-    <td>AV8570</td>
-    <td>AVIANCA</td>
-    <td>MONTERA</td>
-    <td> </td>
-    <td>04:00 PM</td>
-    <td>5:30 PM</td>
-    <td>ITINERARIO</td>
-  </tr>
-  
+  {% endfor %}
   
 </table>
     </section>
