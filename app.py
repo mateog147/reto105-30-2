@@ -537,9 +537,80 @@ def registroVuelo():
 
 
 
-@server.route('/editarvuelo/')
-def editoVuelo():
-    return render_template('editarEliminar.html')
+@server.route('/editarvuelo/',methods=['GET', 'POST'])
+@server.route('/editarvuelo/<string:met>/',methods=['GET', 'POST'])
+def editoVuelo(met=None):
+    if session['perfil']=='A':
+        if request.method == 'GET':
+            return render_template('editarEliminar.html',var=" ")
+        else:
+            #si el metodo no es buscar
+            if met==None:
+                cod=request.form['code']
+                estado=request.form['estado']
+                airline=request.form['empresa']
+                matricula=request.form['matricula']
+                piloto=request.form['piloto']
+                fsalida=request.form['fechaSalida']
+                hsalida=request.form['horaSalida']
+                fllegada=request.form['fechaLlegada']
+                hllegada=request.form['horaLlegada']
+                origen=request.form['origen']
+                destino=request.form['destino']
+                try:
+                    if cod==None:
+                        msg = 'ERROR: Se Debe suministrar un usuario'
+                    else:
+                        fhsalida=datetime.fromisoformat(fsalida+' '+hsalida)
+                        fhllegada=datetime.fromisoformat(fllegada+' '+hllegada) 
+                        # Procedo a actualizar el usuario indicado
+                        #Armo la consulta SQL
+                        sql = f"UPDATE vuelos SET aerolinea = '{airline}', matricula = '{matricula}', destino = '{destino}', origen = '{origen}', piloto = '{piloto}', horasalida='{fhsalida}', horallegada='{fhllegada}', estadovuelo='{estado}' WHERE codigo='{cod}'"
+                        #Ejecuto la consulta 
+                        res = resgistrardato(sql)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        if res==0:
+                            msg ='ERROR:: Usuario no valido'
+                            print(msg)
+                        else:                    
+                            msg = 'Ok'
+                except Exception:
+                    msg = 'ERROR: Por favor intente luego'
+                    print(Exception)
+                if msg == 'Ok':
+                    return redirect('/madmin/')
+                else:
+                    return render_template('editarUsuarioAdmin.html',error = msg)
+            #si el metodo es buscar
+            else:
+                cod=request.form['code']
+                try:
+                    if cod==None:
+                        msg = 'ERROR: Se Debe suministrar un codigo de vuelo'
+                    else:
+                        # Procedo a ubicar el usuario indicado
+                        #Armo la consulta SQL
+                        sql = f"SELECT aerolinea, matricula, destino, origen, estadovuelo, piloto,horasalida, horallegada FROM vuelos WHERE codigo='{cod}'"
+                        #Ejecuto la consulta 
+                        dat = cargardatos(sql)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        if len(dat)==0:
+                            msg ='ERROR:: Usuario no valido'
+                            print(msg)
+                        #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+                        else:              
+                            msg = 'Ok'
+                                
+                except Exception:
+                    msg = 'ERROR: Por favor intente luego'
+                    print(Exception)
+                if msg == 'Ok':
+                    return render_template('editarEliminar.html',empresa=dat[0][0], matricula=dat[0][1],destino=dat[0][2], origen=dat[0][3], estado=dat[0][4],piloto=dat[0][5],fhsalida=dat[0][6],fhllegada=dat[0][7],codigo=cod,var='None' )
+                else:
+                    return render_template('editarEliminar.html',error = msg)
+    else:
+        return render_template('error.html',mensaje='Acceso no permitido')
+
 
 
 

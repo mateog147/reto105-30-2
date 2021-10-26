@@ -4,53 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Formulario de contacto</title>
+    <title>Editar vuelo</title>
 
-    <link rel="stylesheet" href='{{ url_for("static", filename="css/estilos.css") }}'>
     <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
 </head>
+
 <body>
+
     <header class="header">
         <img class="header__img" src="../static/media/icons8-aeropuerto-100.png" alt="Logo" /> 
         <h2 class="header__title"><a href="/home/">Aeropuerto Matecaña Internacional</a> </h2>
     </header>
-    <section class="form_wrapeditar">
 
-        <form action="" class="form_contact">
-            <h2>Edita o elimina el vuelo</h2>
-            <div class="user_info">
-                <label for="names">No. vuelo *</label>
-                <input type="text" id="names">
+    <section class="login">
+        <section class="login__container">
+                <center><h2>Editar Vuelos Nacionales</h2></center>
+                <h2 class="errmsg">{{error}}</h2>
+                <form class="login__container--form">
+                    <div>
+                        <input class="input" type="text" name="code" placeholder="Codigo de Vuelo" value="{{codigo}}"  required/>
+                        <button class="button" formaction="/editarvuelo/buscar/" formmethod="post" style="width: 70px;">Buscar</button>
+                    </div>
 
-                <label for="phone">Aerolinea</label>
-                <input type="text" id="phone">
+                    <div>
+                        <h2>Estado actual: {{estado}}</h2>
+                        <label>Si desea modificar seleccione otra opción:</label>
+                        <select id="estado" class="select" name="estado" style="width: 150px; ">
+                            <option value="ITINERARIO">ITINERARIO</option>
+                            <option value="EN SALA">EN SALA</option>
+                            <option value="VOLANDO">VOLANDO</option>
+                            <option value="ATERIZO">ATERIZO</option>
+                            <option value="CERRADO">CERRADO</option>
+                            <option value="RETRASADO">RETRASADO</option>
+                            <option value="CANCELADO">CANCELADO</option>
+                        </select>
+                        <button class="button" formaction="/editarvuelo/" formmethod="post" style="width: 75px;">Guardar</button>
+                    </div>
+                    
+                    <input class="input" type="text" name="empresa" placeholder="Aerolinea" value="{{empresa}}"/>
+                    <input class="input" type="text" name="matricula" placeholder="Matricula de la Aeronave" value="{{matricula}}"/>
+                    <input class="input" type="text" name="piloto" placeholder="Piloto (cedula)" value="{{piloto}}"/>
 
-                <label for="email">Destino *</label>
-                <input type="text" id="email">
+                    <label for="horaSalida">Fecha y hora salida actual:</label>
+                    <h2>{{fhsalida}}</h2>
+                    <label>Si quiere modificar selecione otra opción</label>
+                    <div>
+                        <input class="select" type="date" name="fechaSalida" id="fechaSalida"/>
+                        <input class="select" type="time" name="horaSalida" id="horaSalida" value="{{hsalida}}" />
+                    </div>
 
-                <label for="mensaje">Procedente *</label>
-                <textarea id="mensaje"></textarea>
+                    <label>Fecha y hora llegada actual:</label> 
+                    <h2>{{fhllegada}}</h2>
+                    <label>Si quiere modificar selecione otra opción</label>
+                    <div>
+                        <input class="select" type="date" name="fechaLlegada" id="fechaLlegada"/>
+                        <input class="select" type="time" name="horaLlegada" id="horaLlegada" />
+                    </div>
 
-                <label for="mensaje">Hora salida *</label>
-                <textarea id="mensaje"></textarea>
+                    <div class="login__select" style="display: flex;">
+                        <div>
+                            <span style="width: 50%; font-size: 24px; font-weight: bold;">Origen: {{origen}}</span>
+                            <br>
+                            <label>Si desea moficar </label>
+                            <select class="select" id="origen" name="origen" style="width: 150px;">
+                                <option value="">-</option>
+                                <option value="Armenia-AXM">Armenia-AXM</option>
+                                <option value="Barranquilla-BAQ">Barranquilla-BAQ</option>
+                                <option value="Bogotá-BOG">Bogotá-BOG</option>
+                                <option value="Bucaramanga-BGA">Bucaramanga-BGA</option>
+                                <option value="Cali-CLO">Cali-CLO</option>
+                                <option value="Cartagena-CTG">Cartagena-CTG</option>
+                                <option value="Cúcuta-CUC">Cúcuta-CUC</option>
+                                <option value="Florencia-FLA">Florencia-FLA</option>
+                                <option value="Ibagué-IBE">Ibagué-IBE</option>
+                                <option value="Leticia-LET">Leticia-LET</option>
+                                <option value="Manizales-MZL">Manizales-MZL</option>
+                                <option value="Medellín-MDE">Medellín-MDE</option>
+                                <option value="Pereira-PEI">Pereira-PEI</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span style="width: 50%;font-size: 24px; font-weight: bold;">Destino: {{destino}}</span>
+                            <br>
+                            <label>seleccione otra opción</label>
+                            <select class="select" id="destino" name="destino" style="width: 150px;">
+                                <option value="">-</option>
+                                <option value="Armenia-AXM">Armenia-AXM</option>
+                                <option value="Barranquilla-BAQ">Barranquilla-BAQ</option>
+                                <option value="Bogotá-BOG">Bogotá-BOG</option>
+                                <option value="Bucaramanga-BGA">Bucaramanga-BGA</option>
+                                <option value="Cali-CLO">Cali-CLO</option>
+                                <option value="Cartagena-CTG">Cartagena-CTG</option>
+                                <option value="Cúcuta-CUC">Cúcuta-CUC</option>
+                                <option value="Florencia-FLA">Florencia-FLA</option>
+                                <option value="Ibagué-IBE">Ibagué-IBE</option>
+                                <option value="Leticia-LET">Leticia-LET</option>
+                                <option value="Manizales-MZL">Manizales-MZL</option>
+                                <option value="Medellín-MDE">Medellín-MDE</option>
+                                <option value="Pereira-PEI">Pereira-PEI</option>
+                            </select>
+                        </div>
+                    </div>
 
-                <label for="mensaje">Hora llegada *</label>
-                <textarea id="mensaje"></textarea>
-
-                <label for="mensaje">Estado *</label>
-                <textarea id="mensaje"></textarea>
-
-                <div>        
-                    <input class="EditarVuelo" type="button" value="Eliminar" id="btnSend">
-                    <input class="EditarVuelo" type="button" value="Editar" id="btnSend">
-                </div>
-            </div>
-        </form>
-
+                    <button class="button" formaction="/editarvuelo/" formmethod="post">Guardar datos Vuelo</button>
+                </form>
+            </section>
     </section>
-    <footer class="footer" >
+    <footer class="footer">
         <a href="/terminos">Terminos y condiciones </a>
         <a href="/contactanos">Contactanos</a>
-      </footer>
+    </footer>
+    <script type="text/javascript">
+        //alert("{{estado}}");
+        document.getElementById("estado").value = "{{estado}}";
+        document.getElementById("origen").value = "{{origen}}";
+        document.getElementById("destino").value = "{{destino}}";
+        document.getElementById("fechaSalida").value = ("{{fhsalida}}").split(" ")[0];
+        document.getElementById("horaSalida").value = ("{{fhsalida}}").split(" ")[1];
+        document.getElementById("fechaLlegada").value = ("{{fhllegada}}").split(" ")[0];
+        document.getElementById("horaLlegada").value = ("{{fhllegada}}").split(" ")[1];
+    </script>
 </body>
+
 </html>
+
