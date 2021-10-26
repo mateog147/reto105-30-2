@@ -16,22 +16,24 @@
     <section class="login">
         <section class="login__container">
                 <h2>Editar información</h2>
+                <h2 class="errmsg">{{error}}</h2>
                 <form action="/madmin/">
                     <p>Ingrese el Documento del usuario</p>
                     <div>
-                        <select class="select" style="width: 60px;">
+                        <select class="select" name="tipo" style="width: 60px;">
                             <option>CC</option>
                             <option>TI</option>
                             <option>CE</option>
                         </select>
                         <input class="input" type="text" placeholder="Numero de Documento" name="cedula" value="{{cedula}}" style="width: 200px;" required/>
-                        <button class="button" formaction="/roles/buscar/" formmethod="post">Buscar Usuario</button>
+                        <input class="input" type="text"  name="codigo" value="{{codigo}}" style="display: none;">
+                        <button class="button" formaction="/editarusuario/buscar/" formmethod="post">Buscar Usuario</button>
                     </div>
                     <input class="input" type="text" name="nombre" value="{{nombre}}" placeholder="Nombre"/>
                     <input class="input" type="text" name="apellido" value="{{apellido}}" placeholder="Apellidos"/>
                     <input class="input" type="email" name='email' value="{{correo}}" placeholder="E-mail"/>
                     
-                    <button class="button" type="submit" formaction="/roles/" formmethod="post">Guardar Cambios</button>
+                    <button class="button" type="submit" formaction="/editarusuario/" formmethod="post">Guardar Cambios</button>
                 </form>
             </section>
     </section>
