@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar usuarios</title>
+    <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+</head>
+<body>
+    <header class="header">
+        <img class="header__img" src="../static/media/icons8-aeropuerto-100.png" alt="Logo" /> 
+        <h2 class="header__title"><a href="/home/">Aeropuerto Matecaña Internacional</a> </h2>
+    </header>
+
+    <section class="login">
+        <section class="login__container">
+                <h2>Editar información</h2>
+                <form action="/madmin/">
+                    <p>Ingrese el Documento del usuario</p>
+                    <div>
+                        <select class="select" style="width: 60px;">
+                            <option>CC</option>
+                            <option>TI</option>
+                            <option>CE</option>
+                        </select>
+                        <input class="input" type="text" placeholder="Numero de Documento" name="cedula" value="{{cedula}}" style="width: 200px;" required/>
+                        <button class="button" formaction="/roles/buscar/" formmethod="post">Buscar Usuario</button>
+                    </div>
+                    <input class="input" type="text" name="nombre" value="{{nombre}}" placeholder="Nombre"/>
+                    <input class="input" type="text" name="apellido" value="{{apellido}}" placeholder="Apellidos"/>
+                    <input class="input" type="email" name='email' value="{{correo}}" placeholder="E-mail"/>
+                    
+                    <button class="button" type="submit" formaction="/roles/" formmethod="post">Guardar Cambios</button>
+                </form>
+            </section>
+    </section>
+    <footer class="footer">
+        <a href="/terminos">Terminos y condiciones </a>
+        <a href="/contactanos">Contactanos</a>
+    </footer>
+</body>
+</html>

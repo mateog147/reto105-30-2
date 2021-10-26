@@ -62,7 +62,7 @@ def login():
             else:
                 # Procedo a ubicar el usuario indicado
                 #Armo la consulta SQL
-                sql = f"SELECT nombre, perfil, contraseña FROM usuarios WHERE email='{usr}'"
+                sql = f"SELECT nombre, perfil, contraseña, codigo FROM usuarios WHERE email='{usr}'"
                 #print('arme a consulta')
                 #Ejecuto la consulta 
                 dat = cargardatos(sql)
@@ -82,6 +82,7 @@ def login():
                         session['nombre']=(dat[0][0])
                         profile=dat[0][1]
                         session['perfil']=dat[0][1]
+                        session['codigo']=dat[0][3]
                     else:
                         msg ='ERROR:: clave invalida'
                         
@@ -221,7 +222,7 @@ def listarVuelos(usr=None):
     else:
         try:
             #Armo la consulta SQL
-            sql = f"SELECT * FROM vuelos"
+            sql = f"SELECT * FROM vuelos WHERE estadovuelo <> 'CERRADO'"
             #print('arme a consulta')
             #Ejecuto la consulta 
             dat = cargardatos(sql)
@@ -247,8 +248,77 @@ def listarVuelos(usr=None):
 
 
 @server.route('/editarusuario/')
+@server.route('/editarusuario/',methods=['GET', 'POST'])
 def editUser():
-    return render_template('editarEliminarUsuario.html')
+    #Valido el perfil del usuario logeado.
+    #Si el usuario no tiene privilegios de administrado
+    if session['perfil']=='U' or session['perfil']=='P': 
+        if request.method == 'GET':
+            cod=session['codigo'] #capturo el codigo del usuario logeado
+            try:
+                if cod==None:
+                    msg = 'ERROR: Se Debe suministrar un usuario'
+                else:
+                    #armo la consulta 
+                    sql = f"SELECT nombre, apellidos, documento, email FROM usuarios WHERE codigo='{cod}'"
+                    #Ejecuto la consulta 
+                    dat = cargardatos(sql)
+
+                    #si no encuentro informacion
+                    if len(dat)==0:
+                        msg ='ERROR:: Usuario no valido'
+                        #print(msg)
+                    #De lo contario si hay datos encontrados
+                    else:                    
+                        msg = 'Ok'
+                            
+            except Exception:
+                msg = 'ERROR: Por favor intente luego'
+                print(Exception)
+            #Si encontre datos renderizo la pantalla de editar usuario con los datos del usuario
+            if msg == 'Ok':
+                return render_template('editarEliminarUsuario.html',nombre = dat[0][0], apellido = dat[0][1], cedula = dat[0][2], correo = dat[0][3])
+            #si algo salio mal rederizo la pantalla con el mensaje de error
+            else:
+                return render_template('editarEliminarUsuario.html',error = msg)
+        elif request.method == 'POST':
+            cod=session['codigo']
+            nombre=request.form['nombre']
+            apellido=request.form['apellido']
+            tipo=request.form['tipo']
+            doc=request.form['documento']
+            correo=request.form['email']
+            try:
+                if cod==None:
+                    msg = 'ERROR: Se Debe suministrar un usuario'
+                else:
+                    # Procedo a actualizar el usuario indicado
+                    #Armo la consulta SQL
+                    sql = f"UPDATE usuarios SET nombre = '{nombre}', apellidos = '{apellido}', tipodocumento = '{tipo}', documento = '{doc}', email = '{correo}' WHERE codigo='{cod}'"
+                    #Ejecuto la consulta 
+                    res = resgistrardato(sql)
+                    if res==0:
+                        msg ='ERROR:: Usuario no valido'
+                        print(msg)
+                    #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+                    else:                    
+                        msg = 'Ok'
+                            
+            except Exception:
+                msg = 'ERROR: Por favor intente luego'
+                print(Exception)
+            if msg == 'Ok':
+                if session['perfil']=='P':
+                    return redirect('/mpiloto/')
+                else:
+                    return redirect('/menu/')
+            else:
+                return render_template('editarEliminarUsuario.html',error = msg)
+    #si el usuario si tiene privilegios de admin
+    elif session['perfil']=='A':
+        return render_template('editarUsuarioAdmin.html')
+    else:
+        return render_template('error.html',mensaje='Acceso no permitido')
 
 
 
