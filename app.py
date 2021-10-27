@@ -8,44 +8,44 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from markupsafe import escape
 import traceback
 
-server = Flask('__name__')
+app = Flask('__name__')
 
-@server.errorhandler(404)
+@app.errorhandler(404)
 def e404(e):
     return render_template('error.html'), 404
 
-@server.route('/')
-@server.route('/home/')
-@server.route('/index/')
+@app.route('/')
+@app.route('/home/')
+@app.route('/index/')
 def index():
     session['perfil']=None
     return render_template('index.html')
 
 
 
-@server.route('/nosotros')
-@server.route('/nosotros/')
+@app.route('/nosotros')
+@app.route('/nosotros/')
 def about():
     return render_template('sobreNosotros.html')
 
 
 
-@server.route('/terminos')
-@server.route('/terminos/')
+@app.route('/terminos')
+@app.route('/terminos/')
 def tercond():
     return render_template('terminosCondiciones.html')
 
 
 
-@server.route('/contactanos')
-@server.route('/contactanos/')
+@app.route('/contactanos')
+@app.route('/contactanos/')
 def contact():
     return render_template('contacto.html')
 
 
 
-@server.route('/login')
-@server.route('/login/',methods=['GET', 'POST'])
+@app.route('/login')
+@app.route('/login/',methods=['GET', 'POST'])
 def login():
     #Si el metodo HTTP es GET devuelvo rederizado la  pagina de Login
     if request.method=='GET':
@@ -108,8 +108,8 @@ def login():
 
 
 
-@server.route('/registro')
-@server.route('/registro/',methods=['GET', 'POST'])
+@app.route('/registro')
+@app.route('/registro/',methods=['GET', 'POST'])
 def register():
     #Si el metodo HTTP es GET devuelvo rederizado la  pagina de Registro
     if request.method == 'GET':
@@ -154,7 +154,7 @@ def register():
 
 
 
-@server.route('/recuperarpwd/')
+@app.route('/recuperarpwd/')
 def rpwd():
     sal = '<head><link rel="stylesheet" href="../static/css/style.css"></head>'
     sal +="<div class = 'main'>"
@@ -165,9 +165,9 @@ def rpwd():
 
 
 
-@server.route('/menu')
-@server.route('/menu/')
-@server.route('/menu/<string:usr>')
+@app.route('/menu')
+@app.route('/menu/')
+@app.route('/menu/<string:usr>')
 def userMenu(usr=None):
     if session['perfil']=='U':
         return render_template('menuUsuario.html',nombre=session['nombre'],mensaje=session['mensaje'])
@@ -176,9 +176,9 @@ def userMenu(usr=None):
 
 
 
-@server.route('/madmin')
-@server.route('/madmin/')
-@server.route('/madmin/<string:usr>')
+@app.route('/madmin')
+@app.route('/madmin/')
+@app.route('/madmin/<string:usr>')
 def adminMenu(usr=None):
     if session['perfil']=='A':
         return render_template('menuAdmin.html')
@@ -187,9 +187,9 @@ def adminMenu(usr=None):
     
 
 
-@server.route('/mpiloto')
-@server.route('/mpiloto/')
-@server.route('/mpiloto/<string:usr>')
+@app.route('/mpiloto')
+@app.route('/mpiloto/')
+@app.route('/mpiloto/<string:usr>')
 def pilotMenu(usr=None):
     if session['perfil']=='P':
         return render_template('menuPiloto.html',nombre=session['nombre'])
@@ -198,9 +198,9 @@ def pilotMenu(usr=None):
 
 
 
-@server.route('/calificar')
-@server.route('/calificar/',methods=['GET', 'POST'])
-@server.route('/calificar/<string:metodo>/',methods=['GET', 'POST'])
+@app.route('/calificar')
+@app.route('/calificar/',methods=['GET', 'POST'])
+@app.route('/calificar/<string:metodo>/',methods=['GET', 'POST'])
 def calificarVuelo(metodo=None):
 #valido que este logeado un usuario
     if session['perfil']=='U':
@@ -280,9 +280,9 @@ def calificarVuelo(metodo=None):
     return "Hola no eres nadie"
 
 
-@server.route('/separavuelo')
-@server.route('/separavuelo/',methods=['GET', 'POST'])
-@server.route('/separavuelo/<string:met>/',methods=['GET', 'POST'])
+@app.route('/separavuelo')
+@app.route('/separavuelo/',methods=['GET', 'POST'])
+@app.route('/separavuelo/<string:met>/',methods=['GET', 'POST'])
 def separarVuelo(met=None):
     if session['perfil']=='U':
     #Si el metodo de la consulta HTTP  es get decuelvo el formulario limpio
@@ -365,9 +365,9 @@ def separarVuelo(met=None):
 
 
 
-@server.route('/vervuelos/')
-@server.route('/vervuelos/<string:usr>')
-@server.route('/vervuelos/',methods=['GET', 'POST'])
+@app.route('/vervuelos/')
+@app.route('/vervuelos/<string:usr>')
+@app.route('/vervuelos/',methods=['GET', 'POST'])
 
 def listarVuelos(usr=None):
     if session['perfil']==None or session['perfil']=='I':
@@ -400,9 +400,9 @@ def listarVuelos(usr=None):
 
 
 
-@server.route('/editarusuario/')
-@server.route('/editarusuario/',methods=['GET', 'POST'])
-@server.route('/editarusuario/<string:met>/',methods=['GET', 'POST'])
+@app.route('/editarusuario/')
+@app.route('/editarusuario/',methods=['GET', 'POST'])
+@app.route('/editarusuario/<string:met>/',methods=['GET', 'POST'])
 def editUser(met=None):
     #Valido el perfil del usuario logeado.
     #Si el usuario no tiene privilegios de administrado
@@ -536,16 +536,16 @@ def editUser(met=None):
 
 
 
-@server.route('/calificaciones/')
-@server.route('/calificaciones/<string:usr>')
+@app.route('/calificaciones/')
+@app.route('/calificaciones/<string:usr>')
 def verCal(usr=None):
     return render_template('comentarios.html')
 
 
 
-@server.route('/roles')
-@server.route('/roles/<string:met>/',methods=['GET', 'POST'])
-@server.route('/roles/',methods=['GET', 'POST'])
+@app.route('/roles')
+@app.route('/roles/<string:met>/',methods=['GET', 'POST'])
+@app.route('/roles/',methods=['GET', 'POST'])
 def permisosRoles(met=None):
     #valido que este logeado un admin
     if session['perfil']=='A':
@@ -641,8 +641,8 @@ def permisosRoles(met=None):
 
 
 
-@server.route('/registrovuelo/')
-@server.route('/registrovuelo/',methods=['GET', 'POST'])
+@app.route('/registrovuelo/')
+@app.route('/registrovuelo/',methods=['GET', 'POST'])
 def registroVuelo():
     if session['perfil']!='A':
         return render_template('error.html',mensaje='Acseso no permitido')
@@ -690,8 +690,8 @@ def registroVuelo():
 
 
 
-@server.route('/editarvuelo/',methods=['GET', 'POST'])
-@server.route('/editarvuelo/<string:met>/',methods=['GET', 'POST'])
+@app.route('/editarvuelo/',methods=['GET', 'POST'])
+@app.route('/editarvuelo/<string:met>/',methods=['GET', 'POST'])
 def editoVuelo(met=None):
     if session['perfil']=='A':
         if request.method == 'GET':
@@ -767,7 +767,7 @@ def editoVuelo(met=None):
 
 
 
-@server.route('/verusuarios/')
+@app.route('/verusuarios/')
 def listarUsuario():
     if session['perfil']!='A':
         return render_template('error.html',mensaje='Acseso no permitido')
@@ -799,5 +799,5 @@ def listarUsuario():
 
 
 if __name__=='__main__':
-    server.secret_key=os.urandom(12)
-    server.run(debug=True,port=8080)
+    app.secret_key=os.urandom(12)
+    app.run(debug=True,port=8080)
