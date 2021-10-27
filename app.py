@@ -10,6 +10,10 @@ import traceback
 
 server = Flask('__name__')
 
+@server.errorhandler(404)
+def e404(e):
+    return render_template('error.html'), 404
+
 @server.route('/')
 @server.route('/home/')
 @server.route('/index/')
@@ -42,7 +46,6 @@ def contact():
 
 @server.route('/login')
 @server.route('/login/',methods=['GET', 'POST'])
-
 def login():
     #Si el metodo HTTP es GET devuelvo rederizado la  pagina de Login
     if request.method=='GET':
@@ -67,8 +70,6 @@ def login():
                 #Ejecuto la consulta 
                 dat = cargardatos(sql)
                 #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
-                print('estoy afuera del if')
-                print(dat)
                 if len(dat)==0:
                     msg ='ERROR:: Usuario no valido'
                     print(msg)
@@ -83,6 +84,7 @@ def login():
                         profile=dat[0][1]
                         session['perfil']=dat[0][1]
                         session['codigo']=dat[0][3]
+                        session['mensaje']=' '
                     else:
                         msg ='ERROR:: clave invalida'
                         
@@ -168,7 +170,7 @@ def rpwd():
 @server.route('/menu/<string:usr>')
 def userMenu(usr=None):
     if session['perfil']=='U':
-        return render_template('menuUsuario.html',nombre=session['nombre'])
+        return render_template('menuUsuario.html',nombre=session['nombre'],mensaje=session['mensaje'])
     else:
         return render_template('error.html',mensaje='Acseso no permitido')
 
@@ -197,18 +199,169 @@ def pilotMenu(usr=None):
 
 
 @server.route('/calificar')
-@server.route('/calificar/')
-@server.route('/calificar/<string:cod>/<string:usr>')
-def calificarVuelo(usr=None,cod=None):
-    return render_template('calificarVuelo.html')
+@server.route('/calificar/',methods=['GET', 'POST'])
+@server.route('/calificar/<string:metodo>/',methods=['GET', 'POST'])
+def calificarVuelo(metodo=None):
+#valido que este logeado un usuario
+    if session['perfil']=='U':
+    #Si el metodo de la consulta HTTP  es get decuelvo el formulario limpio
+        if request.method == 'GET':
+            return render_template('calificarVuelo.html')
 
+        #Si el metodo el post valido si en la url voy a buscar o guardar
+        else:
+            #si el metodo no es buscar
+            if metodo==None:
+                codvuelo=request.form['codigo']
+                corigen = request.form ['origen']
+                csalida = request.form ['salida']
+                hsalida=request.form['horasalida']
+                hllegada=request.form['horallegada']
+                try:
+                    if codvuelo==None:
+                        msg = 'ERROR: Se Debe suministrar un usuario'
+                    else:
+                        # Procedo a actualizar el usuario indicado
+                        #Armo la consulta SQL
+                        sql = f"UPDATE vuelos SET origen = '{corigen}' salida ='{csalida}', horasalida = '{hsalida}', horallegada = '{hllegada}' WHERE codigo='{codvuelo}'"
+                        #Ejecuto la consulta 
+                        res = resgistrardato(sql)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        #print('estoy afuera del if')
+                        #print(dat)
+                        if res==0:
+                            msg ='ERROR:: Usuario no valido'
+                            print(msg)
+                        #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+                        else:                    
+                                msg = 'Ok'
+                except Exception:
+                    msg = 'ERROR: Por favor intente luego'
+                    print(Exception)
+                if msg == 'Ok':
+                    return redirect('/menu/')
+                else:
+                    return render_template('calificarVuelo.html',codvuelo = msg)
+            
+            #si el metodo es buscar
+            else:
+                codvuelo=request.form['codigo']
+                try:
+                    if codvuelo==None:
+                        msg = 'ERROR: Se Debe suministrar un codigo de vuelo'
+                    else:
+                        # Procedo a ubicar el usuario indicado
+                        #Armo la consulta SQL
+                        sql = f"SELECT origen, destino, horasalida, horallegada FROM vuelos WHERE codigo='{codvuelo}'"
+                        #print('arme a consulta')
+                        #Ejecuto la consulta 
+                        dat = cargardatos(sql)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        #print('estoy afuera del if')
+                        print(dat)
+                        if len(dat)==0:
+                            msg ='ERROR:: Codigo no valido'
+                            print(msg)
+                        else:
+                            corigen= dat[0][0]
+                            csalida = dat[0][1]
+                            hsalida = dat[0][2]
+                            hllegada = dat[0][3]
+                            msg='Ok'
+                        #De lo contrario capturo el perfil del usuario y creo las variables de sesio        
+                except Exception:
+                    msg = 'ERROR: Por favor intente luego'
+                    print(Exception)
+                    traceback.print_exc()
+                if msg == 'Ok':
+                    return render_template('calificarVuelo.html', codigo = codvuelo, origen = corigen, destino = csalida, horasalida = hsalida, horallegada = hllegada)
+                else:
+                    return render_template('error.html',error=msg)
+    return "Hola no eres nadie"
 
 
 @server.route('/separavuelo')
-@server.route('/separavuelo/')
-@server.route('/separavuelo/<string:usr>')
-def separarVuelo(usr=None):
-    return render_template('separarVuelo.html')
+@server.route('/separavuelo/',methods=['GET', 'POST'])
+@server.route('/separavuelo/<string:met>/',methods=['GET', 'POST'])
+def separarVuelo(met=None):
+    if session['perfil']=='U':
+    #Si el metodo de la consulta HTTP  es get decuelvo el formulario limpio
+        if request.method == 'GET':
+            return render_template('separarVuelo.html')
+        #Si el metodo el post valido si en la url voy a buscar o guardar
+        else:
+            #si el metodo es buscar 
+            if met != None:
+                fecha = request.form['fecha']
+                origen=request.form['origen']
+                destino=request.form['destino']
+                if fecha==None or origen==None or destino==None:
+                    msg="ERROR::Suministre información"
+                else:
+                    #Armo la consulta SQL
+                    try:
+                        sql = f"SELECT codigo, aerolinea, horasalida FROM vuelos WHERE DATE(horasalida)='{fecha}' AND origen='{origen}' AND destino='{destino}'"
+                        #Ejecuto la consulta 
+                        dat = cargardatos(sql)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        if len(dat)==0:
+                            msg ='ERROR:: No hay vuelos para los datos ingresados'
+                            print(msg)
+                        else:
+                            msg='Ok'
+                        #De lo contrario capturo el perfil del usuario y creo las variables de sesio        
+                    except Exception:
+                        msg = 'ERROR: Por favor intente luego'
+                        print(Exception)
+                        traceback.print_exc()
+                if msg == 'Ok':
+                    return render_template('separarVuelo.html', vuelos = dat, origen = origen, destino = destino)
+                else:
+                    return render_template('separarVuelo.html',error=msg)
+            #si el metodo no es buscar
+            else:
+                vuelo=request.form['codigo']
+                pasajero=session['codigo']
+                if vuelo==None:
+                    msg="Seleccione un vuelo valido"
+                else:
+                    try:
+                        consulta=f"SELECT capacidad, pasajeros FROM vuelos WHERE codigo='{vuelo}'"
+                        dat = cargardatos(consulta)
+                        #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                        if len(dat)==0:
+                            msg ='ERROR:: Inetnte nuevamente'
+                            print(msg)
+                        else:
+                            if dat[0][0]<=dat[0][1]:
+                                msg="Vuelo sin cupos disponibles"
+                            else:
+                                #De lo contrario capturo el perfil del usuario y creo las variables de sesio       
+                                sql = f"INSERT INTO reservas (vuelo, pasajero) VALUES ('{vuelo}', '{pasajero}')"
+                                #print('arme a consulta')
+                                res = resgistrardato(sql)
+                                sql2 = f"UPDATE vuelos SET pasajeros = '{dat[0][1]+1}' WHERE codigo='{vuelo}'"
+                                #print('arme a consulta')
+                                res2 = resgistrardato(sql2)
+                                if res==0:
+                                    msg ='ERROR AL CARGAR LA INFORMACIÓN'
+                                else:
+                                    msg = 'Ok'
+                                    if(res2==0):
+                                        print('ERROR NO SE RESTO EL CUPO')
+                        
+                    except Exception:
+                        msg = 'ERROR: Por favor intente luego'
+                        print(Exception)
+                        traceback.print_exc()
+                if msg == 'Ok':
+                    session['mensaje']="Reservado tu proximo vuelo!"
+                    return redirect('/menu/')
+                else:
+                    return render_template('separarVuelo.html',error=msg)
+    else:
+        print('no llegue a ninguna lado')
+        return render_template('error.html',mensaje='Acceso no permitido')
 
 
 
