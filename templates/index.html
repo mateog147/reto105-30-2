@@ -4,7 +4,7 @@
     .header 
     {
       width                   : 100% !important;
-      height                  : 10vh !important;
+
     }  
     .footer {
       width                   : 100% !important;
@@ -13,6 +13,8 @@
             width                   : 100%;
             height                  : 85vh;
             background: linear-gradient(#e4ae44,#d80200);
+            display: grid;
+            place-content: center;
     }
     
     .nav {
@@ -25,18 +27,19 @@
     text-decoration: none;
     }
 
-    .nav-menu {
+  .nav-menu {
+  max-width: 80%;
   display: flex;
-  margin-right: 40px;
+  flex-direction: row;
+  justify-content: space-between;
   list-style: none;
 }
 
 .nav-menu-item {
-  font-size: 18px;
   margin: 0 10px;
-  line-height: 80px;
   text-transform: uppercase;
   width: max-content;
+  height: 40px;
 }
 
 .nav-menu-link {

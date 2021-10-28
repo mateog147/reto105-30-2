@@ -47,13 +47,14 @@ background-color: #171f60;
             <section class="login__container">
                     <center><h2>Separa tu Vuelo</h2></center>
                     <h2 class="errmsg">{{error}}</h2>
-                    <form id="formulario" action="/separavuelo/" method="post">
-                        <input type="text" name="codigo" id="codigo" style="display: none;">
-                        <!--label for="">Ida y Vuelta<input type="checkbox" id="cbox1" value="first_checkbox"></!--label!-->
+
+                    <form id="formulario1" action="/separavuelo/buscar/" method="post">
+                        <input type="text" name="op" id="op" style="display: none;">
                         <div>
                             <span>Fecha del vuelo:</span>
                             <input name="fecha" type="date"  class="select" style="width: 170px;"/>
                         </div>
+                        <label for="">Buscar fecha especifica:<input type="checkbox" id="check" name="check" value="1"></label>
                         <div class="login__select" style="display: flex;">
                             <div>
                                 <span style="width: 50%;">Origen</span>
@@ -94,36 +95,51 @@ background-color: #171f60;
                                 </select>
                             </div>
                         </div>
-                        <button class="button" formaction="/separavuelo/buscar/" formmethod="post">Buscar Vuelo</button>
                     </form>
-                    <table id="myTable">
-                    <tr class="header1">
-                        <th style="width:25%;">No. Vuelo</th>
-                        <th style="width:20%;">Aerolinea</th>
-                        <th style="width:20%;">Hora</th>
-                        <th style="width:25%;">Capacidad - Psajeros</th>
-                        <th style="width:10%;"> </th>
-                    </tr>
-                    {% for dat in vuelos %}
-                        <tr>
-                            <td style="width:5%;">{{dat[0]}}</td>
-                            <td style="width:15%;">{{dat[1]}}</td>
-                            <td style="width:15%;">{{dat[2]}}</td>
-                            <td style="width:15%;">{{dat[4]}}-{{dat[3]}}</td>
-                            <td><input name="choice" type="radio" value="{{dat[0]}}"/></td>
-                        </tr>
-                    {% endfor %}
-                    </table>
-                <button class="button" id="btn" onclick="load()">Separar Cupo en este vuelo</button>
-                </section>
-                
+                    <button class="button" id="btn" onclick="search()">Buscar Vuelo</button>
+
+                    <form id="formulario2" action="/separavuelo/" method="post">
+                        <input type="text" name="codigo" id="codigo" style="display: none;">
+                        <table id="myTable">
+                            <tr class="header1">
+                                <th style="width:25%;">No. Vuelo</th>
+                                <th style="width:20%;">Aerolinea</th>
+                                <th style="width:20%;">Hora</th>
+                                <th style="width:25%;">Capacidad - Psajeros</th>
+                                <th style="width:10%;"> </th>
+                            </tr>
+                            {% for dat in vuelos %}
+                                <tr>
+                                    <td style="width:5%;">{{dat[0]}}</td>
+                                    <td style="width:15%;">{{dat[1]}}</td>
+                                    <td style="width:15%;">{{dat[2]}}</td>
+                                    <td style="width:15%;">{{dat[4]}}-{{dat[3]}}</td>
+                                    <td><input name="choice" type="radio" value="{{dat[0]}}"/></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </form>
+                <button class="button" id="btn2" onclick="load()">Separar Cupo en este vuelo</button>
+            </section>
         </section>
+
         <footer class="footer">
             <a href="/terminos">Terminos y condiciones </a>
             <a href="/contactanos">Contactanos</a>
         </footer>
         <script type="text/javascript">
             //alert("{{estado}}");
+            function search(){
+                let cb = document.getElementById('check');
+                if (cb.checked){
+                    //alert("con fecha");
+                    document.getElementById("op").value = 1;
+                }
+                else{
+                    document.getElementById("op").value = 0;
+                }
+                document.getElementById('formulario1').submit();
+            }
             function load() {
                 //alert("buscando")
                 const rbs = document.querySelectorAll('input[name="choice"]');
@@ -136,7 +152,7 @@ background-color: #171f60;
                     }
                 }
                 document.getElementById("codigo").value = selectedValue;
-                document.getElementById('formulario').submit();
+                document.getElementById('formulario2').submit();
                 //alert(document.getElementById("codigo").value)
             }
             document.getElementById("origen").value = "{{origen}}";

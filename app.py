@@ -205,9 +205,33 @@ def pilotMenu(usr=None):
 def calificarVuelo(metodo=None):
 #valido que este logeado un usuario
     if session['perfil']=='U':
-    #Si el metodo de la consulta HTTP  es get decuelvo el formulario limpio
+    #Si el metodo de la consulta HTTP  es get decuelvo el formulario limpio con los vuelos que tiene ewe pasajero
         if request.method == 'GET':
-            return render_template('calificarVuelo.html')
+            dat=None
+            try:
+                # Procedo a ubicar el usuario indicado
+                #Armo la consulta SQL
+                sql = f"SELECT vuelo FROM reservas WHERE pasajero='{session['codigo']}'"
+                #print('arme a consulta')
+                #Ejecuto la consulta 
+                dat = cargardatos(sql)
+                #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+                #print(dat)
+                if len(dat)==0:
+                    msg ='ERROR:: Codigo no valido'
+                    print(msg)
+                else:
+                    msg='Ok'
+                    print(dat)
+                #De lo contrario capturo el perfil del usuario y creo las variables de sesio        
+            except Exception:
+                msg = 'ERROR: Por favor intente luego'
+                print(Exception)
+                traceback.print_exc()
+            if msg == 'Ok':
+                return render_template('calificarVuelo.html',vuelos=dat)
+            else:
+                return render_template('calificarVuelo.html',error = msg)
 
         #Si el metodo el post valido si en la url voy a buscar o guardar
         else:
@@ -241,7 +265,7 @@ def calificarVuelo(metodo=None):
                     session['mensaje']="Gracias por su calificación"
                     return redirect('/menu/')
                 else:
-                    return render_template('calificarVuelo.html',codvuelo = msg)
+                    return render_template('calificarVuelo.html',error = msg)
             
             #si el metodo es buscar
             else:
@@ -274,7 +298,7 @@ def calificarVuelo(metodo=None):
                     print(Exception)
                     traceback.print_exc()
                 if msg == 'Ok':
-                    return render_template('calificarVuelo.html', codigo = codvuelo, origen = corigen, destino = csalida, horasalida = hsalida, horallegada = hllegada)
+                    return render_template('calificarVuelo.html', codigo = codvuelo, origen = corigen, destino = csalida, horasalida = hsalida, horallegada = hllegada, vuelos=[(codvuelo,"bug")])
                 else:
                     return render_template('error.html',error=msg)
     return "Hola no eres nadie"
@@ -295,12 +319,17 @@ def separarVuelo(met=None):
                 fecha = request.form['fecha']
                 origen=request.form['origen']
                 destino=request.form['destino']
+                op = request.form['op']
+                #print(f"la opciones {op}")
                 if fecha==None or origen==None or destino==None:
                     msg="ERROR::Suministre información"
                 else:
                     #Armo la consulta SQL
                     try:
-                        sql = f"SELECT codigo, aerolinea, horasalida,capacidad, pasajeros FROM vuelos WHERE DATE(horasalida)='{fecha}' AND origen='{origen}' AND destino='{destino}'"
+                        if op=='1':
+                            sql = f"SELECT codigo, aerolinea, horasalida,capacidad, pasajeros FROM vuelos WHERE DATE(horasalida)='{fecha}' AND origen='{origen}' AND destino='{destino}'"
+                        elif op=='0':
+                            sql = f"SELECT codigo, aerolinea, horasalida,capacidad, pasajeros FROM vuelos WHERE origen='{origen}' AND destino='{destino}'"
                         #Ejecuto la consulta 
                         dat = cargardatos(sql)
                         #si los datos encontado son  quiere decir que el usuario o la clave son invalidos

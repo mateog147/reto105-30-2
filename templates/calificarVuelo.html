@@ -59,15 +59,20 @@ input[type="radio"]:checked ~ label {
             <h2 class="login__title">Califica tu Vuelo</h2>
             <h2 class="errmsg">{{error}}</h2>
             <div>
-            <input class="input" type="text" placeholder="Numero de Vuelo" name="codigo" value="{{codigo}}" style="width: 200px;" required/>
-            <button class="button" formaction="/calificar/buscar/" formmethod="post">Buscar</button>  
-            <h3 class="login__title">Origen: {{origen}}</h3>
-            <h3 class="login__title">Destino: {{destino}}</h3>
-            <h3 class="login__title">Hora de Salida: {{horasalida}}</h3>
-            <h3 class="login__title">Hora de Llegada: {{horallegada}}</h3>
+                <select id="codigo" class="select" name="codigo" style="width: 150px; ">
+                  {% for cod in vuelos %}
+                    <option value={{cod[0]}}>{{cod[0]}}</option>
+                  {% endfor %}
+              </select>
+              <button class="button" formaction="/calificar/buscar/" formmethod="post">Buscar</button>
+              <h3 class="login__title">Codigo: {{codigo}}</h3>
+              <h3 class="login__title">Origen: {{origen}}</h3>
+              <h3 class="login__title">Destino: {{destino}}</h3>
+              <h3 class="login__title">Hora de Salida: {{horasalida}}</h3>
+              <h3 class="login__title">Hora de Llegada: {{horallegada}}</h3>
             </div>
             <h3>Evalua Tu vuelo</h3> 
-              <input type="text" id="nota" name="nota">    
+              <input type="text" id="nota" name="nota" style="display: none;">    
                 <p class="clasificacion">
                 <input id="radio1" type="radio" name="estrellas" value="5"><!--
                 --><label for="radio1">★</label><!--
