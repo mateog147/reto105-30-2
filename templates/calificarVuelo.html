@@ -55,7 +55,7 @@ input[type="radio"]:checked ~ label {
 </header>
     <section class="login">
         <section class="login__container">  
-        <form>
+        <form id="formulario" action="/calificar/" method="post">
             <h2 class="login__title">Califica tu Vuelo</h2>
             <h2 class="errmsg">{{error}}</h2>
             <div>
@@ -66,7 +66,8 @@ input[type="radio"]:checked ~ label {
             <h3 class="login__title">Hora de Salida: {{horasalida}}</h3>
             <h3 class="login__title">Hora de Llegada: {{horallegada}}</h3>
             </div>
-            <h3>Evalua Tu vuelo</h3>     
+            <h3>Evalua Tu vuelo</h3> 
+              <input type="text" id="nota" name="nota">    
                 <p class="clasificacion">
                 <input id="radio1" type="radio" name="estrellas" value="5"><!--
                 --><label for="radio1">★</label><!--
@@ -79,16 +80,33 @@ input[type="radio"]:checked ~ label {
                 --><input id="radio5" type="radio" name="estrellas" value="1"><!--
                 --><label for="radio5">★</label>
                 </p>
-             
+        
                 <h3>Escribe un comentario</h3> 
-                <input class="input" type="text" placeholder="comentarios" style="border: 2px solid white; height: 200px; background-color: white; color:black;"/>
-                <button class="button" formaction="/calificar/">Enviar Evaluacion</button>
+                <input class="input" type="text" placeholder="comentarios" name="coment" style="border: 2px solid white; height: 200px; background-color: white; color:black;"/>
             </form>
+            <button class="button" onclick="load()">Enviar Evaluacion</button>
         </section>
     </section>
     <footer class="footer">
         <a href="/terminos">Terminos y condiciones </a>
         <a href="/contactanos">Contactanos</a>
-        
+    </footer>
+    <script>
+      function load() {
+                //alert("buscando")
+                const rbs = document.querySelectorAll('input[name="estrellas"]');
+                let selectedValue;
+                for (const rb of rbs) {
+                    if (rb.checked) {
+                        //alert(rb.value)
+                        selectedValue = rb.value;
+                        break;
+                    }
+                }
+                document.getElementById("nota").value = selectedValue;
+                //alert(document.getElementById("nota").value)
+                document.getElementById('formulario').submit();
+            }
+    </script>
 </body>
 </html>

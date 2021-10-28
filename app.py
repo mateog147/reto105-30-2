@@ -65,7 +65,7 @@ def login():
             else:
                 # Procedo a ubicar el usuario indicado
                 #Armo la consulta SQL
-                sql = f"SELECT nombre, perfil, contraseña, codigo FROM usuarios WHERE email='{usr}'"
+                sql = f"SELECT nombre, perfil, contraseña, codigo, documento FROM usuarios WHERE email='{usr}'"
                 #print('arme a consulta')
                 #Ejecuto la consulta 
                 dat = cargardatos(sql)
@@ -84,6 +84,7 @@ def login():
                         profile=dat[0][1]
                         session['perfil']=dat[0][1]
                         session['codigo']=dat[0][3]
+                        session['cedula']=dat[0][4]
                         session['mensaje']=' '
                     else:
                         msg ='ERROR:: clave invalida'
@@ -213,17 +214,15 @@ def calificarVuelo(metodo=None):
             #si el metodo no es buscar
             if metodo==None:
                 codvuelo=request.form['codigo']
-                corigen = request.form ['origen']
-                csalida = request.form ['salida']
-                hsalida=request.form['horasalida']
-                hllegada=request.form['horallegada']
+                nota=request.form['nota']
+                coment=request.form['coment']
                 try:
                     if codvuelo==None:
-                        msg = 'ERROR: Se Debe suministrar un usuario'
+                        msg = 'ERROR: Se Debe suministrar un codigo de vuelo'
                     else:
                         # Procedo a actualizar el usuario indicado
                         #Armo la consulta SQL
-                        sql = f"UPDATE vuelos SET origen = '{corigen}' salida ='{csalida}', horasalida = '{hsalida}', horallegada = '{hllegada}' WHERE codigo='{codvuelo}'"
+                        sql = f"INSERT INTO calificaciones (vuelo, pasajero, calificacion, comentarios) VALUES ('{codvuelo}', '{session['codigo']}', '{nota}', '{coment}')"
                         #Ejecuto la consulta 
                         res = resgistrardato(sql)
                         #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
@@ -234,11 +233,12 @@ def calificarVuelo(metodo=None):
                             print(msg)
                         #De lo contrario capturo el perfil del usuario y creo las variables de sesion
                         else:                    
-                                msg = 'Ok'
+                            msg = 'Ok'
                 except Exception:
                     msg = 'ERROR: Por favor intente luego'
                     print(Exception)
                 if msg == 'Ok':
+                    session['mensaje']="Gracias por su calificación"
                     return redirect('/menu/')
                 else:
                     return render_template('calificarVuelo.html',codvuelo = msg)
@@ -300,7 +300,7 @@ def separarVuelo(met=None):
                 else:
                     #Armo la consulta SQL
                     try:
-                        sql = f"SELECT codigo, aerolinea, horasalida FROM vuelos WHERE DATE(horasalida)='{fecha}' AND origen='{origen}' AND destino='{destino}'"
+                        sql = f"SELECT codigo, aerolinea, horasalida,capacidad, pasajeros FROM vuelos WHERE DATE(horasalida)='{fecha}' AND origen='{origen}' AND destino='{destino}'"
                         #Ejecuto la consulta 
                         dat = cargardatos(sql)
                         #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
@@ -372,6 +372,33 @@ def separarVuelo(met=None):
 def listarVuelos(usr=None):
     if session['perfil']==None or session['perfil']=='I':
         return render_template('error.html',mensaje='Acseso no permitido')
+    #si el usuario es piloto 
+    elif session['perfil']=='P':
+        try:
+            #Armo la consulta SQL
+            sql = f"SELECT * FROM vuelos WHERE estadovuelo <> 'CERRADO' AND piloto='{session['cedula']}'"
+            #print('arme a consulta')
+            #Ejecuto la consulta 
+            dat = cargardatos(sql)
+            #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+            #print('estoy afuera del if')
+            #print(dat)
+            if len(dat)==0:
+                msg ='No hay vuelosregistrados'
+                print(msg)
+            #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+            else:                   
+                msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+            traceback.print_exc()
+        if msg == 'Ok':
+            return render_template('verVuelos.html',vuelos=dat)
+        else:
+            return render_template('error.html',mensaje=msg)
+    #si no es piloto
     else:
         try:
             #Armo la consulta SQL
@@ -383,7 +410,7 @@ def listarVuelos(usr=None):
             #print('estoy afuera del if')
             #print(dat)
             if len(dat)==0:
-                msg ='No hay usuarios registrados'
+                msg ='No hay vuuelos registrados'
                 print(msg)
             #De lo contrario capturo el perfil del usuario y creo las variables de sesion
             else:                   
@@ -539,7 +566,61 @@ def editUser(met=None):
 @app.route('/calificaciones/')
 @app.route('/calificaciones/<string:usr>')
 def verCal(usr=None):
-    return render_template('comentarios.html')
+    if session['perfil']==None or session['perfil']=='I' or session['perfil']=='U':
+        return render_template('error.html',mensaje='Acseso no permitido')
+    #si el usuario es piloto 
+    elif session['perfil']=='P':
+        try:
+            #Armo la consulta SQL
+            sql = f"SELECT vuelo, pasajero, calificacion, comentarios FROM calificaciones INNER JOIN vuelos ON vuelos.codigo = calificaciones.vuelo WHERE vuelos.piloto='{session['cedula']}'"
+            #print('arme a consulta')
+            #Ejecuto la consulta 
+            dat = cargardatos(sql)
+            #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+            #print('estoy afuera del if')
+            #print(dat)
+            if len(dat)==0:
+                msg ='No hay vuelosregistrados'
+                print(msg)
+            #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+            else:                   
+                msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+            traceback.print_exc()
+        if msg == 'Ok':
+            return render_template('comentarios.html',comentarios=dat)
+        else:
+            return render_template('error.html',mensaje=msg)
+    #si no es piloto
+    else:
+        try:
+            #Armo la consulta SQL
+            sql = f"SELECT * FROM calificaciones"
+            #print('arme a consulta')
+            #Ejecuto la consulta 
+            dat = cargardatos(sql)
+            #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+            #print('estoy afuera del if')
+            #print(dat)
+            if len(dat)==0:
+                msg ='No hay comentarios registrados'
+                print(msg)
+            #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+            else:                   
+                msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+            traceback.print_exc()
+        if msg == 'Ok':
+            return render_template('comentarios.html',comentarios=dat)
+        else:
+            return render_template('error.html',mensaje=msg)
+    
 
 
 

@@ -118,6 +118,7 @@ body{
     color: white;
     padding: 60px 68px 40px;
     min-height: 500px;
+    min-width: fit-content;
     width: 350px;
     display: flex;
     justify-content: space-around;

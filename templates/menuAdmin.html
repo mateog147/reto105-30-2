@@ -13,7 +13,7 @@
 
 <body>
     <header class="header">
-        <img class="header__img" src="../static/media/icons8-aeropuerto-100.png" alt="Logo" /> 
+        <img class="header__img" src='{{ url_for("static", filename="media/icons8-aeropuerto-100.png") }}' alt="Logo" /> 
         <h2 class="header__title"><a href="/home/">Aeropuerto Matecaña Internacional</a> </h2>
     </header>
     <section class="menu">
@@ -29,10 +29,8 @@
                 <button class="button" formaction="/verusuarios/">Ver usuarios</button>
                 <button class="button" formaction="/editarusuario/">Editar usuarios</button>
                 <button class="button" formaction="/roles/">Asignar permisos y roles</button>
-                <button class="button" formaction="/editarusuario/">Editar tu información</button>
+                <!--button class="button" formaction="/editarusuario/">Editar tu información</!--button!-->
             </form>
-            <a href="/menu">Ver menu como Pasajero</a>
-            <a href="/mpiloto">Ver menu como Piloto</a>
         </section>
     </section>
     <footer class="footer">

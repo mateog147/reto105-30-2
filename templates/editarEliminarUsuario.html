@@ -14,7 +14,13 @@
         <img class="header__img" src='{{ url_for("static", filename="media/icons8-aeropuerto-100.png") }}' alt="Logo" />
         <div>
             <h2 class="header__title"><a href="/home/">Aeropuerto Matecaña Internacional</a> </h2>
-            <a href="/menu/">Regresar</a>
+
+            {% if session['perfil'] == 'U' %}
+                <a href="/menu/">Regresar</a>
+            {% endif %}
+            {% if session['perfil'] == 'P' %}
+            <a href="/mpiloto/">Regresar</a>
+            {% endif %}
         </div> 
     </header>
 
@@ -37,7 +43,12 @@
                     <!--button class="button" value="Registame" onclick="validateCaptcha()"-->
                     <input class="button" type="submit" value="Guardar"> 
                 </form>
-                <a href="/login/">Regresar</a>
+                {% if session['perfil'] == 'U' %}
+                <a href="/menu/">Regresar</a>
+                {% endif %}
+                {% if session['perfil'] == 'P' %}
+                <a href="/mpiloto/">Regresar</a>
+                {% endif %}
             </section>
     </section>
     <footer class="footer">
