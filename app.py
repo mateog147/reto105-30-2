@@ -38,9 +38,38 @@ def tercond():
 
 
 @app.route('/contactanos')
-@app.route('/contactanos/')
+@app.route('/contactanos/',methods=['GET', 'POST'])
 def contact():
-    return render_template('contacto.html')
+    if request.method=='GET':
+        return render_template('contacto.html')
+    else:
+        nom = request.form['nombre']
+        tel= request.form['telefono']
+        correo= request.form['email']
+        mensaje= request.form['mensaje']
+        try:
+            # Valido los datos 
+            if nom==None or tel==None:
+                msg = 'ERROR: SE DEBE INGRESAR EL NOMBRE'
+            elif correo==None:
+                msg = 'ERROR: SE DEBE INGRESAR UN CORREO'
+            else:
+                # Valido los datos 
+                sql = f"INSERT INTO mensajes (nombre, telefono, email, mensaje) VALUES ('{nom}', '{tel}', '{correo}', '{mensaje}')"
+                #print('arme a consulta')
+                res = resgistrardato(sql)
+                if res==0:
+                    msg ='ERROR AL CARGAR LA INFORMACIÓN'
+                else:
+                    msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+        if msg == 'Ok':
+            return redirect('/home/')
+        else:
+            return render_template('contacto.html',error=msg)
 
 
 
@@ -124,7 +153,7 @@ def register():
         correo=request.form['email']
         pwd1=request.form['pwd']
         pwd2=request.form['pwd2']
-        print(nombre)
+        #print(nombre)
         try:
             dat = None
             # Valido los datos 

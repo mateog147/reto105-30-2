@@ -7,7 +7,7 @@
     .header 
     {
       width                   : 100% !important;
-      height                  : 10vh !important;
+      height                  : auto !important;
     }  
     .footer {
       width                   : 100% !important;
@@ -18,8 +18,9 @@
     }
     .wkarea {
             width                   : 100%;
-            height                  : 85vh;
-            background: linear-gradient(#e4ae44,#d80200);
+            height                  : auto;
+            background: linear-gradient(#e4ae44,#e4ae44);
+            padding: 5px;
     }
     
     .nav {
@@ -83,7 +84,7 @@
   width: 100%;
   font-size: 16px;
   padding: 12px 20px 12px 40px;
-  background: linear-gradient(rgba(227,162,63), rgba(228,174,68));
+  background: linear-gradient(#e4ae44,#e4ae44);
     
   margin-bottom: 12px;
 }
@@ -93,6 +94,7 @@
   width: 100%;
   font-size: 18px;
   box-sizing: border-box;
+  background-color: linear-gradient(#e4ae44,#d80200);;
 }
 
 #myTable th, #myTable td {
@@ -108,6 +110,12 @@
 .login__title
 {
  background-color: linear-gradient(rgba(227,162,63), rgba(228,174,68));
+}
+@media(max-width:640px){
+  .wkarea .login__title .header__img{
+    display: none !important;
+  }
+    
 }
 </style>
 
