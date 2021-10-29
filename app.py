@@ -424,7 +424,7 @@ def separarVuelo(met=None):
 
 
 @app.route('/vervuelos/')
-@app.route('/vervuelos/<string:usr>')
+@app.route('/vervuelos/<string:usr>/',methods=['GET', 'POST'])
 @app.route('/vervuelos/',methods=['GET', 'POST'])
 
 def listarVuelos(usr=None):
@@ -460,7 +460,10 @@ def listarVuelos(usr=None):
     else:
         try:
             #Armo la consulta SQL
-            sql = f"SELECT * FROM vuelos WHERE estadovuelo <> 'CERRADO'"
+            if usr==None:
+                sql = f"SELECT * FROM vuelos WHERE estadovuelo <> 'CERRADO'"
+            else:
+                sql = f"SELECT * FROM vuelos INNER JOIN reservas ON vuelos.codigo = reservas.vuelo WHERE reservas.pasajero='{session['codigo']}'"
             #print('arme a consulta')
             #Ejecuto la consulta 
             dat = cargardatos(sql)

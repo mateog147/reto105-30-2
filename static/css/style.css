@@ -4,6 +4,10 @@ body{
     padding: 0;
     font-family: 'Mulish', sans-serif;
 }
+form{
+    width: 100%;
+    padding: 15px;
+}
 .header{
     width: 100%;
     min-height: 90px;
@@ -167,6 +171,11 @@ body{
     text-decoration: underline;
 } 
 
+.login__select{
+    display: flex;
+    width: 100%;
+}
+
 .button{
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
@@ -213,6 +222,7 @@ body{
 @media only screen and (max-width: 600px){
     .header{
         flex-direction: column;
+        padding: 5px;
     }
     .login__container{
         background-color: transparent;
@@ -230,6 +240,13 @@ body{
     .img-main{
         width: 90%;
         height: auto;
+    }
+    .login__select{
+        flex-direction: column;
+    }
+    form div{
+        display: flex;
+        flex-direction: column;
     }
 }
 
