@@ -38,9 +38,38 @@ def tercond():
 
 
 @app.route('/contactanos')
-@app.route('/contactanos/')
+@app.route('/contactanos/',methods=['GET', 'POST'])
 def contact():
-    return render_template('contacto.html')
+    if request.method=='GET':
+        return render_template('contacto.html')
+    else:
+        nom = request.form['nombre']
+        tel= request.form['telefono']
+        correo= request.form['email']
+        mensaje= request.form['mensaje']
+        try:
+            # Valido los datos 
+            if nom==None or tel==None:
+                msg = 'ERROR: SE DEBE INGRESAR EL NOMBRE'
+            elif correo==None:
+                msg = 'ERROR: SE DEBE INGRESAR UN CORREO'
+            else:
+                # Valido los datos 
+                sql = f"INSERT INTO mensajes (nombre, telefono, email, mensaje) VALUES ('{nom}', '{tel}', '{correo}', '{mensaje}')"
+                #print('arme a consulta')
+                res = resgistrardato(sql)
+                if res==0:
+                    msg ='ERROR AL CARGAR LA INFORMACIÓN'
+                else:
+                    msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+        if msg == 'Ok':
+            return redirect('/home/')
+        else:
+            return render_template('contacto.html',error=msg)
 
 
 
@@ -124,7 +153,7 @@ def register():
         correo=request.form['email']
         pwd1=request.form['pwd']
         pwd2=request.form['pwd2']
-        print(nombre)
+        #print(nombre)
         try:
             dat = None
             # Valido los datos 
@@ -395,7 +424,7 @@ def separarVuelo(met=None):
 
 
 @app.route('/vervuelos/')
-@app.route('/vervuelos/<string:usr>')
+@app.route('/vervuelos/<string:usr>/',methods=['GET', 'POST'])
 @app.route('/vervuelos/',methods=['GET', 'POST'])
 
 def listarVuelos(usr=None):
@@ -431,7 +460,10 @@ def listarVuelos(usr=None):
     else:
         try:
             #Armo la consulta SQL
-            sql = f"SELECT * FROM vuelos WHERE estadovuelo <> 'CERRADO'"
+            if usr==None:
+                sql = f"SELECT * FROM vuelos WHERE estadovuelo <> 'CERRADO'"
+            else:
+                sql = f"SELECT * FROM vuelos INNER JOIN reservas ON vuelos.codigo = reservas.vuelo WHERE reservas.pasajero='{session['codigo']}'"
             #print('arme a consulta')
             #Ejecuto la consulta 
             dat = cargardatos(sql)
@@ -907,6 +939,34 @@ def listarUsuario():
             return render_template('error.html',mensaje=msg)
 
 
+@app.route('/vermensajes/')
+def listarMensaje():
+    if session['perfil']!='A':
+        return render_template('error.html',mensaje='Acseso no permitido')
+    else:
+        try:
+            #Armo la consulta SQL
+            sql = f"SELECT * FROM mensajes"
+            #print('arme a consulta')
+            #Ejecuto la consulta 
+            dat = cargardatos(sql)
+            #si los datos encontado son  quiere decir que el usuario o la clave son invalidos
+            #print('estoy afuera del if')
+            #print(dat)
+            if len(dat)==0:
+                msg ='No hay mensajes registrados'
+                print(msg)
+            #De lo contrario capturo el perfil del usuario y creo las variables de sesion
+            else:                   
+                msg = 'Ok'
+                    
+        except Exception:
+            msg = 'ERROR: Por favor intente luego'
+            print(Exception)
+        if msg == 'Ok':
+            return render_template('verMensajes.html',mensajes=dat)
+        else:
+            return render_template('error.html',mensaje=msg)
 
 if __name__=='__main__':
     app.secret_key=os.urandom(12)

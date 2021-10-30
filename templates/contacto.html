@@ -18,13 +18,14 @@
     <section class="login">
         <section class="login__container">
             <h2 class="login__title">Envía un mensaje</h2>
-            <form class="login__container--form" action="/home/">
-                <input class="input" type="text" placeholder="Nombre*" required/>
-                <input class="input" type="text" placeholder="Telefono/Celular" required/>
-                <input class="input" type="email" placeholder="Correo electronico*" required/>
-                <input class="input" type="text" placeholder="Escriba su Mensaje" required/ style="height: 150px; text-align: start;">
-                <button class="button">Enviar Mensaje</button>
+            <h2>{{error}}</h2>
+            <form id="formulario" class="login__container--form" action="/contactanos/" method="post">
+                <input class="input" type="text" placeholder="Nombre*" name="nombre" required/>
+                <input class="input" type="text" placeholder="Telefono/Celular" name="telefono" required/>
+                <input class="input" type="email" placeholder="Correo electronico*" name="email" required/>
+                <input class="input" type="text" placeholder="Escriba su Mensaje" name="mensaje" required style="height: 150px; text-align: start;">
             </form>
+            <button class="button" onclick="mensaje()">Enviar Mensaje</button>
             
         </section>
     </section>
@@ -32,5 +33,11 @@
         <a href="/">Terminos y condiciones </a>
         <a href="/">Contactanos</a>
     </footer>
+    <script>
+        function mensaje(){
+            alert("Mensaje enviado");
+            document.getElementById('formulario').submit();
+        }
+    </script>
 </body>
 </html>
